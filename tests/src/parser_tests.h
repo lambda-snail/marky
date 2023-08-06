@@ -4,6 +4,11 @@
 
 #include <gtest/gtest.h>
 
+std::string header_one_level =
+R"(
+# This is a level one header
+)";
+
 std::string two_paragraphs =
 R"(
 This is a single paragraph. It should not count as 0 or 2 paragraphs.
@@ -20,6 +25,15 @@ TEST(ParserTests, Paragraphs_ShouldIgnoreBlankLines)
 
     EXPECT_TRUE(r);
     EXPECT_EQ(2, md.items.size());
+}
+
+TEST(ParserTests, Headers_LevelOneShouldParse)
+{
+    marky::markdown md;
+    bool r = marky::parse_string(header_one_level.begin(), header_one_level.end(), md);
+
+    EXPECT_TRUE(r);
+    EXPECT_EQ(1, md.items.size());
 }
 
 //std::cout << md.items.size() << std::endl;
