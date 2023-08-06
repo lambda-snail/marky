@@ -73,6 +73,19 @@ namespace marky
     template <typename Iterator>
     bool parse_string(Iterator first, Iterator last, marky::markdown& md)
     {
-        return x3::parse(first, last, parser::markdown, md);
+        markdown parse_result;
+        bool r = x3::parse(first, last, parser::markdown, parse_result);
+
+        // Post parse filter to remove blank lines - this is not optimized
+        // TODO: Optimize or solve in grammar
+        for (auto const& p : parse_result.items)
+        {
+            if (not p.items.empty() && not p.items.at(0).text.empty())
+            {
+                md.items.push_back(p);
+            }
+        }
+
+        return r;
     }
 }
