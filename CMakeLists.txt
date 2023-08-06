@@ -12,11 +12,13 @@ project(marky)
 
 include_directories(marky PUBLIC include)
 
-add_library(marky src/library.cpp)
+add_library(marky
+        src/library.cpp
+        include/marky/parser.h)
 
 enable_testing()
 add_subdirectory(tests)
 
-target_link_libraries(marky PRIVATE Boost::spirit Boost::fusion)
+target_link_libraries(marky PUBLIC Boost::spirit Boost::fusion)
 
 #include_directories(marky PRIVATE ${boost_SOURCE_DIR}/)

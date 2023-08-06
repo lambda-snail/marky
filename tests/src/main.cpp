@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "library_tests.h"
+#include "parser_tests.h"
 
 int main(int argc, char* argv[])
 {
