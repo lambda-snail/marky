@@ -66,48 +66,13 @@ namespace marky
         BOOST_SPIRIT_DEFINE(paragraph);
 
         rule<class markdown_t, marky::markdown> markdown = "markdown";
-        auto const markdown_def = parser::paragraph % +eol;
+        auto const markdown_def = parser::paragraph % +eol | eol;
         BOOST_SPIRIT_DEFINE(markdown);
     }
 
     template <typename Iterator>
-    bool parse_string(Iterator first, Iterator last)
+    bool parse_string(Iterator first, Iterator last, marky::markdown& md)
     {
-        std::vector<marky::paragraph> paragraphs;
-        marky::markdown md;
-        bool r = x3::parse(first, last, parser::markdown, md);
-
-        std::cout << md.items.size() << std::endl;
-
-        for(auto p : md.items)
-        {
-            for(auto w : p.items)
-            {
-                std::cout << w.text << " ";
-            }
-
-            std::cout << std::endl << std::endl;
-        }
-
-        return r;
+        return x3::parse(first, last, parser::markdown, md);
     }
 }
-
-//int
-//main()
-//{
-//    std::ifstream file("../markdown.md");
-//    std::string markdown;
-//    {
-//        char c;
-//        while ( file.get(c) )
-//        {
-//            markdown += c;
-//        }
-//        file.close();
-//    }
-//
-//    marky::parse_string(markdown.begin(), markdown.end());
-//
-//    return 0;
-//}
