@@ -17,11 +17,26 @@ This is another paragraph!
 )";
 
 
+class my_visitor : public marky::markdown_visitor<>
+{
+public:
+    void operator()(marky::paragraph const& p) const override
+    {
+        std::cout << p.items.size() << std::endl;;
+    }
+
+    void operator()(marky::header const& p) const override
+    {
+        std::cout << p.items.size() << std::endl;;
+    }
+};
+
 
 TEST(ParserTests, Paragraphs_ShouldIgnoreBlankLines)
 {
     marky::markdown md;
-    bool r = marky::parse_string(two_paragraphs.begin(), two_paragraphs.end(), md.items);
+    my_visitor v;
+    bool r = marky::parse_string(two_paragraphs.begin(), two_paragraphs.end(), md.items, &v);
 
     EXPECT_TRUE(r);
     EXPECT_EQ(2, md.items.size());
@@ -30,7 +45,8 @@ TEST(ParserTests, Paragraphs_ShouldIgnoreBlankLines)
 TEST(ParserTests, Headers_LevelOneShouldParse)
 {
     marky::markdown md;
-    bool r = marky::parse_string(header_one_level.begin(), header_one_level.end(), md.items);
+    my_visitor v;
+    bool r = marky::parse_string(header_one_level.begin(), header_one_level.end(), md.items, &v);
 
     EXPECT_TRUE(r);
     EXPECT_EQ(1, md.items.size());

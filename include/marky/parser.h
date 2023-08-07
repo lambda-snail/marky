@@ -25,11 +25,12 @@ namespace marky
 
     struct header
     {
-        int level = 1;
+        //int level = 1;
+        std::string level;
         std::vector<word> items;
     };
 
-struct text_block : public boost::spirit::x3::variant<header, paragraph>
+    struct text_block : public boost::spirit::x3::variant<header, paragraph>
     {
     public:
         text_block() = default;
@@ -77,6 +78,7 @@ namespace marky
     using x3::ascii::space;
     using x3::eol;
     using x3::rule;
+    using x3::repeat;
 
     namespace parser
     {
@@ -89,7 +91,7 @@ namespace marky
         BOOST_SPIRIT_DEFINE(paragraph);
 
         rule<class header_r, marky::header> header = "header";
-        auto const header_def = char_('#') >> parser::word % blank;
+        auto const header_def = repeat(1,5)[char_('#')] >> parser::word % blank;
         BOOST_SPIRIT_DEFINE(header);
 
         //rule<class markdown_t, marky::markdown> markdown = "markdown";
@@ -98,34 +100,33 @@ namespace marky
         BOOST_SPIRIT_DEFINE(markdown);
     }
 
-
-    class my_visitor : public boost::static_visitor<void>
+    template <typename TReturn = void>
+    class markdown_visitor : public boost::static_visitor<TReturn>
     {
     public:
-        void operator()(marky::paragraph const& p) const
-        {
-            std::cout << p.items.size() << std::endl;;
-        }
+        virtual TReturn operator()(marky::paragraph const& p) const { }
 
-        void operator()(marky::header const& p) const
-        {
-            std::cout << p.items.size() << std::endl;;
-        }
+        virtual TReturn operator()(marky::header const& p) const { }
     };
 
-
-    template <typename Iterator>
-    bool parse_string(Iterator first, Iterator last, std::vector<boost::spirit::x3::variant<marky::paragraph, marky::header>>& md)
+    // https://www.boost.org/doc/libs/develop/libs/spirit/doc/x3/html/spirit_x3/tutorials/rexpr.html
+    template <typename TVisitor>
+    bool parse_string(std::string::iterator first, std::string::iterator last, std::vector<boost::spirit::x3::variant<marky::paragraph, marky::header>>& md, markdown_visitor<TVisitor>* visitor = nullptr)
     {
         std::vector< x3::variant<marky::paragraph, marky::header>> parse_result;
         bool r = x3::parse(first, last, parser::markdown, md);
-        //bool r = x3::phrase_parse(first, last, parser::markdown, eol, md);
 
-        // Post parse filter to remove blank lines - this is not optimized
-        // TODO: Optimize or solve in grammar
-        for (auto const& block : md)
+        if(visitor)
         {
-            boost::apply_visitor( my_visitor(), block );
+            for (auto const& block : md)
+            {
+                boost::apply_visitor(*visitor, block);
+            }
+        }
+
+//        for (auto const& block : md)
+//        {
+//            boost::apply_visitor( my_visitor(), block );
 
 
             //if (not p.items.empty() && not p.items.at(0).text.empty())
@@ -139,7 +140,7 @@ namespace marky
             //    boost::get<paragraph>(item);
             //else
             //    std::cout << boost::get<std::string>(attr) << std::endl;
-        }
+        //}
 
         return r;
     }
