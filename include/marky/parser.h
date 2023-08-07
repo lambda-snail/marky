@@ -40,7 +40,7 @@ struct text_block : public boost::spirit::x3::variant<header, paragraph>
 
     struct markdown
     {
-        std::vector<text_block> items;
+        std::vector< boost::spirit::x3::variant<marky::paragraph, marky::header> > items;
     };
 }
 
@@ -115,15 +115,15 @@ namespace marky
 
 
     template <typename Iterator>
-    bool parse_string(Iterator first, Iterator last, marky::markdown& md)
+    bool parse_string(Iterator first, Iterator last, std::vector<boost::spirit::x3::variant<marky::paragraph, marky::header>>& md)
     {
         std::vector< x3::variant<marky::paragraph, marky::header>> parse_result;
-        bool r = x3::parse(first, last, parser::markdown, parse_result);
+        bool r = x3::parse(first, last, parser::markdown, md);
         //bool r = x3::phrase_parse(first, last, parser::markdown, eol, md);
 
         // Post parse filter to remove blank lines - this is not optimized
         // TODO: Optimize or solve in grammar
-        for (auto const& block : parse_result)
+        for (auto const& block : md)
         {
             boost::apply_visitor( my_visitor(), block );
 

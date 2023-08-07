@@ -21,7 +21,7 @@ This is another paragraph!
 TEST(ParserTests, Paragraphs_ShouldIgnoreBlankLines)
 {
     marky::markdown md;
-    bool r = marky::parse_string(two_paragraphs.begin(), two_paragraphs.end(), md);
+    bool r = marky::parse_string(two_paragraphs.begin(), two_paragraphs.end(), md.items);
 
     EXPECT_TRUE(r);
     EXPECT_EQ(2, md.items.size());
@@ -30,7 +30,7 @@ TEST(ParserTests, Paragraphs_ShouldIgnoreBlankLines)
 TEST(ParserTests, Headers_LevelOneShouldParse)
 {
     marky::markdown md;
-    bool r = marky::parse_string(header_one_level.begin(), header_one_level.end(), md);
+    bool r = marky::parse_string(header_one_level.begin(), header_one_level.end(), md.items);
 
     EXPECT_TRUE(r);
     EXPECT_EQ(1, md.items.size());
