@@ -104,9 +104,24 @@ namespace marky
     class markdown_visitor : public boost::static_visitor<TReturn>
     {
     public:
-        virtual TReturn operator()(marky::paragraph const& p) const { }
+        TReturn operator()(marky::paragraph const& p) const
+        {
+            if (not p.items.empty() && not p.items[0].text.empty())
+            {
+                visit_paragraph(p);
+            }
+        }
 
-        virtual TReturn operator()(marky::header const& p) const { }
+        TReturn operator()(marky::header const& h) const
+        {
+            if (not h.items.empty() && not h.items[0].text.empty())
+            {
+                visit_header(h);
+            }
+        }
+
+        virtual TReturn visit_paragraph(marky::paragraph const& p) const = 0;
+        virtual TReturn visit_header(marky::header const& h) const = 0;
     };
 
     // https://www.boost.org/doc/libs/develop/libs/spirit/doc/x3/html/spirit_x3/tutorials/rexpr.html

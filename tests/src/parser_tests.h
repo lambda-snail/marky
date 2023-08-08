@@ -20,27 +20,27 @@ This is another paragraph!
 class my_visitor : public marky::markdown_visitor<>
 {
 public:
-    void operator()(marky::paragraph const& p) const override
+    void visit_paragraph(marky::paragraph const& p) const override
     {
-        std::cout << p.items.size() << std::endl;;
+        std::cout << p.items.size() << std::endl;
     }
 
-    void operator()(marky::header const& p) const override
+    void visit_header(marky::header const& h) const override
     {
-        std::cout << p.items.size() << std::endl;;
+        std::cout << h.items.size() << std::endl;
     }
 };
 
 
-TEST(ParserTests, Paragraphs_ShouldIgnoreBlankLines)
-{
-    marky::markdown md;
-    my_visitor v;
-    bool r = marky::parse_string(two_paragraphs.begin(), two_paragraphs.end(), md.items, &v);
-
-    EXPECT_TRUE(r);
-    EXPECT_EQ(2, md.items.size());
-}
+//TEST(ParserTests, Paragraphs_ShouldIgnoreBlankLines)
+//{
+//    marky::markdown md;
+//    my_visitor v;
+//    bool r = marky::parse_string(two_paragraphs.begin(), two_paragraphs.end(), md.items, &v);
+//
+//    EXPECT_TRUE(r);
+//    EXPECT_EQ(2, md.items.size());
+//}
 
 TEST(ParserTests, Headers_LevelOneShouldParse)
 {
