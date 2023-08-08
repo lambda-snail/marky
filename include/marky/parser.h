@@ -108,19 +108,12 @@ namespace marky
     public:
         TReturn operator()(marky::paragraph const& p) const
         {
-            if (not p.items.empty() && not (p.items.size() == 1 and p.items[0].text.empty()))
-            {
-                visit_paragraph(p);
-            }
+            visit_paragraph(p);
         }
 
         TReturn operator()(marky::header const& h) const
         {
-            if (not h.items.empty() && not (h.items.size() == 1 and h.items[0].text.empty()))
-            {
-
-                visit_header(h);
-            }
+            visit_header(h);
         }
 
         virtual TReturn visit_paragraph(marky::paragraph const& p) const = 0;
