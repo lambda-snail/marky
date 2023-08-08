@@ -1,5 +1,7 @@
 #pragma once
 
+#define BOOST_SPIRIT_DEBUG
+
 #include <boost/spirit/home/x3.hpp>
 #include <boost/spirit/home/x3/support/ast/variant.hpp>
 
@@ -79,24 +81,24 @@ namespace marky
     using x3::eol;
     using x3::rule;
     using x3::repeat;
+    using x3::lexeme;
 
     namespace parser
     {
         rule<class word_r, marky::word> word = "word";
-        auto const word_def = *(~space - char_('#'));
+        auto const word_def = +(~space - char_('#'));
         BOOST_SPIRIT_DEFINE(word);
 
         rule<class paragraph_r, marky::paragraph> paragraph = "paragraph";
-        auto const paragraph_def = parser::word % blank;
+        auto const paragraph_def = lexeme[parser::word % +blank];
         BOOST_SPIRIT_DEFINE(paragraph);
 
         rule<class header_r, marky::header> header = "header";
-        auto const header_def = repeat(1,5)[char_('#')] >> parser::word % blank;
+        auto const header_def = repeat(1,5)[char_('#')] >> lexeme[parser::word % +blank];
         BOOST_SPIRIT_DEFINE(header);
 
-        //rule<class markdown_t, marky::markdown> markdown = "markdown";
         rule<class markdown_t, std::vector< x3::variant<marky::paragraph, marky::header>>> markdown = "markdown";
-        auto const markdown_def = (parser::header | parser::paragraph) % +eol;
+        auto const markdown_def = x3::omit[*space] >> (parser::header | parser::paragraph) % +eol;
         BOOST_SPIRIT_DEFINE(markdown);
     }
 
@@ -106,7 +108,7 @@ namespace marky
     public:
         TReturn operator()(marky::paragraph const& p) const
         {
-            if (not p.items.empty() && not p.items[0].text.empty())
+            if (not p.items.empty() && not (p.items.size() == 1 and p.items[0].text.empty()))
             {
                 visit_paragraph(p);
             }
@@ -114,8 +116,9 @@ namespace marky
 
         TReturn operator()(marky::header const& h) const
         {
-            if (not h.items.empty() && not h.items[0].text.empty())
+            if (not h.items.empty() && not (h.items.size() == 1 and h.items[0].text.empty()))
             {
+
                 visit_header(h);
             }
         }
@@ -126,10 +129,10 @@ namespace marky
 
     // https://www.boost.org/doc/libs/develop/libs/spirit/doc/x3/html/spirit_x3/tutorials/rexpr.html
     template <typename TVisitor>
-    bool parse_string(std::string::iterator first, std::string::iterator last, std::vector<boost::spirit::x3::variant<marky::paragraph, marky::header>>& md, markdown_visitor<TVisitor>* visitor = nullptr)
+    bool parse_string(std::string::iterator first, std::string::iterator last, std::vector<x3::variant<marky::paragraph, marky::header>>& md, markdown_visitor<TVisitor>* visitor = nullptr)
     {
         std::vector< x3::variant<marky::paragraph, marky::header>> parse_result;
-        bool r = x3::parse(first, last, parser::markdown, md);
+        bool r = x3::phrase_parse(first, last, parser::markdown, blank, md);
 
         if(visitor)
         {

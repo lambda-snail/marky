@@ -32,21 +32,26 @@ public:
 };
 
 
-//TEST(ParserTests, Paragraphs_ShouldIgnoreBlankLines)
-//{
-//    marky::markdown md;
-//    my_visitor v;
-//    bool r = marky::parse_string(two_paragraphs.begin(), two_paragraphs.end(), md.items, &v);
-//
-//    EXPECT_TRUE(r);
-//    EXPECT_EQ(2, md.items.size());
-//}
-
-TEST(ParserTests, Headers_LevelOneShouldParse)
+TEST(ParserTests, Paragraphs_ShouldIgnoreBlankLines)
 {
     marky::markdown md;
     my_visitor v;
+    bool r = marky::parse_string(two_paragraphs.begin(), two_paragraphs.end(), md.items, &v);
+
+    EXPECT_TRUE(r);
+    EXPECT_EQ(2, md.items.size());
+}
+
+TEST(ParserTests, Headers_LevelOneShouldParse)
+{
+    testing::internal::CaptureStdout();
+
+    marky::markdown md;
+    my_visitor v;
     bool r = marky::parse_string(header_one_level.begin(), header_one_level.end(), md.items, &v);
+
+    std::string output = testing::internal::GetCapturedStdout();
+    std::cout << output << std::endl;
 
     EXPECT_TRUE(r);
     EXPECT_EQ(1, md.items.size());
