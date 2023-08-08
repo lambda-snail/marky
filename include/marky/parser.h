@@ -1,7 +1,5 @@
 #pragma once
 
-#define BOOST_SPIRIT_DEBUG
-
 #include <boost/spirit/home/x3.hpp>
 #include <boost/spirit/home/x3/support/ast/variant.hpp>
 
@@ -10,63 +8,8 @@
 
 #include <string>
 #include <vector>
-#include <iostream>
-#include <fstream>
 
-namespace marky
-{
-    struct word
-    {
-        std::string text;
-    };
-
-    struct paragraph
-    {
-        std::vector<word> items;
-    };
-
-    struct header
-    {
-        //int level = 1;
-        std::string level;
-        std::vector<word> items;
-    };
-
-    struct text_block : public boost::spirit::x3::variant<header, paragraph>
-    {
-    public:
-        text_block() = default;
-
-        using base_type::base_type;
-        using base_type::operator=;
-    };
-
-    struct markdown
-    {
-        std::vector< boost::spirit::x3::variant<marky::paragraph, marky::header> > items;
-    };
-}
-
-BOOST_FUSION_ADAPT_STRUCT(
-        marky::word,
-        text
-)
-
-BOOST_FUSION_ADAPT_STRUCT(
-        marky::header,
-        level,
-        items
-)
-
-BOOST_FUSION_ADAPT_STRUCT(
-        marky::paragraph,
-        items
-)
-
-BOOST_FUSION_ADAPT_STRUCT(
-        marky::markdown,
-        items
-)
+#include <marky/ast.h>
 
 namespace marky
 {
@@ -85,19 +28,21 @@ namespace marky
 
     namespace parser
     {
-        rule<class word_r, marky::word> word = "word";
+        using namespace marky;
+
+        rule<class word_r, ast::word> word = "word";
         auto const word_def = +(~space - char_('#'));
         BOOST_SPIRIT_DEFINE(word);
 
-        rule<class paragraph_r, marky::paragraph> paragraph = "paragraph";
+        rule<class paragraph_r, ast::paragraph> paragraph = "paragraph";
         auto const paragraph_def = lexeme[parser::word % +blank];
         BOOST_SPIRIT_DEFINE(paragraph);
 
-        rule<class header_r, marky::header> header = "header";
+        rule<class header_r, ast::header> header = "header";
         auto const header_def = repeat(1,5)[char_('#')] >> lexeme[parser::word % +blank];
         BOOST_SPIRIT_DEFINE(header);
 
-        rule<class markdown_t, std::vector< x3::variant<marky::paragraph, marky::header>>> markdown = "markdown";
+        rule<class markdown_t, std::vector< x3::variant<ast::paragraph, ast::header>>> markdown = "markdown";
         auto const markdown_def = x3::omit[*space] >> (parser::header | parser::paragraph) % +eol;
         BOOST_SPIRIT_DEFINE(markdown);
     }
@@ -106,25 +51,24 @@ namespace marky
     class markdown_visitor : public boost::static_visitor<TReturn>
     {
     public:
-        TReturn operator()(marky::paragraph const& p) const
+        TReturn operator()(ast::paragraph const& p) const
         {
             visit_paragraph(p);
         }
 
-        TReturn operator()(marky::header const& h) const
+        TReturn operator()(ast::header const& h) const
         {
             visit_header(h);
         }
 
-        virtual TReturn visit_paragraph(marky::paragraph const& p) const = 0;
-        virtual TReturn visit_header(marky::header const& h) const = 0;
+        virtual TReturn visit_paragraph(ast::paragraph const& p) const = 0;
+        virtual TReturn visit_header(ast::header const& h) const = 0;
     };
 
     // https://www.boost.org/doc/libs/develop/libs/spirit/doc/x3/html/spirit_x3/tutorials/rexpr.html
     template <typename TVisitor>
-    bool parse_string(std::string::iterator first, std::string::iterator last, std::vector<x3::variant<marky::paragraph, marky::header>>& md, markdown_visitor<TVisitor>* visitor = nullptr)
+    bool parse_string(std::string::iterator first, std::string::iterator last, std::vector<x3::variant<ast::paragraph, ast::header>>& md, markdown_visitor<TVisitor>* visitor = nullptr)
     {
-        std::vector< x3::variant<marky::paragraph, marky::header>> parse_result;
         bool r = x3::phrase_parse(first, last, parser::markdown, blank, md);
 
         if(visitor)
@@ -134,24 +78,6 @@ namespace marky
                 boost::apply_visitor(*visitor, block);
             }
         }
-
-//        for (auto const& block : md)
-//        {
-//            boost::apply_visitor( my_visitor(), block );
-
-
-            //if (not p.items.empty() && not p.items.at(0).text.empty())
-            //{
-            //    md.items.push_back(p);
-            //}
-
-            //boost::get<paragraph>(&block) ? boost::get<paragraph>(&block) boost::get<header>(&block)
-            //
-//
-            //    boost::get<paragraph>(item);
-            //else
-            //    std::cout << boost::get<std::string>(attr) << std::endl;
-        //}
 
         return r;
     }

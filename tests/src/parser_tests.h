@@ -20,12 +20,12 @@ This is another paragraph!
 class my_visitor : public marky::markdown_visitor<>
 {
 public:
-    void visit_paragraph(marky::paragraph const& p) const override
+    void visit_paragraph(marky::ast::paragraph const& p) const override
     {
         std::cout << p.items.size() << std::endl;
     }
 
-    void visit_header(marky::header const& h) const override
+    void visit_header(marky::ast::header const& h) const override
     {
         std::cout << h.items.size() << std::endl;
     }
@@ -34,7 +34,7 @@ public:
 
 TEST(ParserTests, Paragraphs_ShouldIgnoreBlankLines)
 {
-    marky::markdown md;
+    marky::ast::markdown md;
     my_visitor v;
     bool r = marky::parse_string(two_paragraphs.begin(), two_paragraphs.end(), md.items, &v);
 
@@ -46,7 +46,7 @@ TEST(ParserTests, Headers_LevelOneShouldParse)
 {
     testing::internal::CaptureStdout();
 
-    marky::markdown md;
+    marky::ast::markdown md;
     my_visitor v;
     bool r = marky::parse_string(header_one_level.begin(), header_one_level.end(), md.items, &v);
 
@@ -56,15 +56,3 @@ TEST(ParserTests, Headers_LevelOneShouldParse)
     EXPECT_TRUE(r);
     EXPECT_EQ(1, md.items.size());
 }
-
-//std::cout << md.items.size() << std::endl;
-//
-//for(auto const& p : md.items)
-//{
-//    for(auto const& w : p.items)
-//    {
-//        std::cout << w.text << " ";
-//    }
-//
-//    std::cout << std::endl << std::endl;
-//}

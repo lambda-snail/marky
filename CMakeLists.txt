@@ -13,7 +13,7 @@ project(marky)
 include_directories(marky PUBLIC include)
 
 add_library(marky
-        src/library.cpp
+        include/marky/ast.h
         include/marky/parser.h)
 
 enable_testing()

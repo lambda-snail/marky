@@ -1,6 +1,6 @@
 #pragma once
 
-#include <marky/library.h>
+#include <marky/ast.h>
 
 #include <gtest/gtest.h>
 
