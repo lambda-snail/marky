@@ -10,4 +10,9 @@ namespace marky::ast {
     struct word {
         std::string w;
     };
+
+    struct header {
+        int level;
+        std::vector<word> words;
+    };
 }

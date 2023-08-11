@@ -41,12 +41,12 @@ public:
 //        words += static_cast<int>(p.items.size());
 //    }
 //
-//    void visit_header(marky::ast::header const& h) override
-//    {
-//        ++headers;
-//        level += static_cast<int>(h.level.size());
-//        words += static_cast<int>(h.items.size());
-//    }
+    void visit_header(marky::ast::header const& h) override
+    {
+        ++headers;
+        level += static_cast<int>(h.level);
+        words += static_cast<int>(h.words.size());
+    }
 };
 
 class ParserTests : public ::testing::Test {
@@ -64,13 +64,14 @@ TEST_F(ParserTests, Paragraphs_ShouldIgnoreBlankLines)
     EXPECT_EQ(18, v.words);
 }
 
-//TEST_F(ParserTests, Headers_LevelOneShouldParse)
-//{
-//    bool r = marky::parse_string(header_one_level.begin(), header_one_level.end(), &v);
-//
-//    EXPECT_TRUE(r);
-//    EXPECT_EQ(1, v.headers);
-//}
+TEST_F(ParserTests, Headers_LevelOneShouldParse)
+{
+    bool r = marky::parser::parse_string(header_one_level.begin(), header_one_level.end(), &v);
+
+    EXPECT_TRUE(r);
+    EXPECT_EQ(1, v.headers);
+    EXPECT_EQ(6, v.words);
+}
 //
 //TEST_F(ParserTests, MixedHeadersParagraphs_ShouldParse)
 //{
