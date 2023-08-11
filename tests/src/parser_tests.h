@@ -3,7 +3,7 @@
 #include <marky/parser.h>
 
 #include <gtest/gtest.h>
-#include <math.h>
+#include <cmath>
 
 std::string header_one_level =
 R"(
