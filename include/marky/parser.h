@@ -10,76 +10,82 @@
 #include <vector>
 
 #include <marky/ast.h>
+#include <stack>
 
-namespace marky
-{
-    namespace x3 = boost::spirit::x3;
-    namespace ascii = boost::spirit::x3::ascii;
 
-    using x3::char_;
-    using x3::_attr;
-    using x3::phrase_parse;
-    using x3::ascii::blank;
-    using x3::ascii::space;
-    using x3::eol;
-    using x3::rule;
-    using x3::repeat;
-    using x3::lexeme;
+namespace marky::parser {
 
-    namespace parser
-    {
-        using namespace marky;
+    typedef char char_t;
 
-        rule<class word_r, ast::word> word = "word";
-        auto const word_def = +(~space - char_('#'));
-        BOOST_SPIRIT_DEFINE(word);
-
-        rule<class paragraph_r, ast::paragraph> paragraph = "paragraph";
-        auto const paragraph_def = lexeme[parser::word % +blank];
-        BOOST_SPIRIT_DEFINE(paragraph);
-
-        rule<class header_r, ast::header> header = "header";
-        auto const header_def = repeat(1,5)[char_('#')] >> lexeme[parser::word % +blank];
-        BOOST_SPIRIT_DEFINE(header);
-
-        rule<class markdown_t, std::vector< x3::variant<ast::paragraph, ast::header>>> markdown = "markdown";
-        auto const markdown_def = x3::omit[*space] >> (parser::header | parser::paragraph) % +eol;
-        BOOST_SPIRIT_DEFINE(markdown);
-    }
-
-    template <typename TReturn = void>
-    class markdown_visitor : public boost::static_visitor<TReturn>
-    {
+    template<typename TReturn = void>
+    class markdown_visitor : public boost::static_visitor<TReturn> {
     public:
-        TReturn operator()(ast::paragraph const& p)
-        {
-            visit_paragraph(p);
+        TReturn operator()(ast::word const &w) {
+            visit_word(w);
         }
 
-        TReturn operator()(ast::header const& h)
-        {
-            visit_header(h);
-        }
-
-        virtual TReturn visit_paragraph(ast::paragraph const& p) = 0;
-        virtual TReturn visit_header(ast::header const& h) = 0;
+//        TReturn operator()(ast::paragraph const &p) {
+//            visit_paragraph(p);
+//        }
+//
+//        TReturn operator()(ast::header const &h) {
+//            visit_header(h);
+//        }
+//
+//        virtual TReturn visit_paragraph(ast::paragraph const &p) = 0;
+//
+//        virtual TReturn visit_header(ast::header const &h) = 0;
+        virtual TReturn visit_word(ast::word const &w) = 0;
     };
 
-    // https://www.boost.org/doc/libs/develop/libs/spirit/doc/x3/html/spirit_x3/tutorials/rexpr.html
-    template <typename TVisitor>
-    bool parse_string(std::string::iterator first, std::string::iterator last, markdown_visitor<TVisitor>* visitor = nullptr)
+    template<typename TVisitor>
+    bool parse_string(std::string::iterator begin,
+                      std::string::iterator end,
+                      markdown_visitor<TVisitor> *visitor)
     {
-        std::vector<x3::variant<ast::paragraph, ast::header>> md;
-        bool r = x3::phrase_parse(first, last, parser::markdown, blank, md);
+        using marky::ast::word;
 
-        if(visitor)
+        bool success = true;
+        std::vector<boost::variant<word>> markdown;//( std::distance(begin, end) / 10 );
+
+        std::stack<char_t> tmp_s;
+        std::vector<char_t> tmp_v;
+        while(begin != end)
         {
-            for (auto const& block : md)
+            char_t c = *begin;
+            switch(c)
             {
-                boost::apply_visitor(*visitor, block);
-            }
+                case ' ':
+                case '\t':
+                case '\n':
+                case '\r':
+                case 'f':
+                    tmp_v.clear();
+                    while(not tmp_s.empty())
+                    {
+                        tmp_v.push_back(tmp_s.top());
+                        tmp_s.pop();
+                    }
+
+                    if(not tmp_v.empty())
+                    {
+                        markdown.emplace_back(word
+                        {
+                           std::string(tmp_v.rbegin(), tmp_v.rend())
+                       });
+                    }
+                    break;
+                default:
+                    tmp_s.push(c);
+            };
+
+            ++begin;
         }
 
-        return r;
+        for (auto const &block: markdown) {
+            boost::apply_visitor(*visitor, block);
+        }
+
+        return success;
     }
 }
