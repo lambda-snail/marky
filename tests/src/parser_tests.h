@@ -16,43 +16,60 @@ This is a single paragraph. It should not count as 0 or 2 paragraphs.
 This is another paragraph!
 )";
 
+std::string two_headers_two_paragraphs =
+R"(
+# This is a level one header
+This is a single paragraph. It should not count as 0 or 2 paragraphs.
+## This is a level two header
+This is another paragraph!
+)";
 
-class my_visitor : public marky::markdown_visitor<>
+class test_visitor : public marky::markdown_visitor<>
 {
 public:
-    void visit_paragraph(marky::ast::paragraph const& p) const override
+    int headers = 0;
+    int paragraphs = 0;
+    void visit_paragraph(marky::ast::paragraph const& p) override
     {
-        std::cout << p.items.size() << std::endl;
+        ++paragraphs;
     }
 
-    void visit_header(marky::ast::header const& h) const override
+    void visit_header(marky::ast::header const& h) override
     {
-        std::cout << h.items.size() << std::endl;
+        ++headers;
     }
 };
 
+class ParserTests : public ::testing::Test {
+public:
 
-TEST(ParserTests, Paragraphs_ShouldIgnoreBlankLines)
+protected:
+    test_visitor v;
+};
+
+TEST_F(ParserTests, Paragraphs_ShouldIgnoreBlankLines)
 {
-    marky::ast::markdown md;
-    my_visitor v;
-    bool r = marky::parse_string(two_paragraphs.begin(), two_paragraphs.end(), md.items, &v);
+    bool r = marky::parse_string(two_paragraphs.begin(), two_paragraphs.end(), &v);
 
     EXPECT_TRUE(r);
-    EXPECT_EQ(2, md.items.size());
+    EXPECT_EQ(2, v.paragraphs);
 }
 
-TEST(ParserTests, Headers_LevelOneShouldParse)
+TEST_F(ParserTests, Headers_LevelOneShouldParse)
 {
-    testing::internal::CaptureStdout();
-
-    marky::ast::markdown md;
-    my_visitor v;
-    bool r = marky::parse_string(header_one_level.begin(), header_one_level.end(), md.items, &v);
-
-    std::string output = testing::internal::GetCapturedStdout();
-    std::cout << output << std::endl;
+    bool r = marky::parse_string(header_one_level.begin(), header_one_level.end(), &v);
 
     EXPECT_TRUE(r);
-    EXPECT_EQ(1, md.items.size());
+    EXPECT_EQ(1, v.headers);
+}
+
+TEST_F(ParserTests, MixedHeadersParagraphs_ShouldParse)
+{
+    bool r = marky::parse_string(two_headers_two_paragraphs.begin(),
+                                 two_headers_two_paragraphs.end(),
+                                 &v);
+
+    EXPECT_TRUE(r);
+    EXPECT_EQ(2, v.paragraphs);
+    EXPECT_EQ(2, v.headers);
 }

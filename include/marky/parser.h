@@ -51,24 +51,25 @@ namespace marky
     class markdown_visitor : public boost::static_visitor<TReturn>
     {
     public:
-        TReturn operator()(ast::paragraph const& p) const
+        TReturn operator()(ast::paragraph const& p)
         {
             visit_paragraph(p);
         }
 
-        TReturn operator()(ast::header const& h) const
+        TReturn operator()(ast::header const& h)
         {
             visit_header(h);
         }
 
-        virtual TReturn visit_paragraph(ast::paragraph const& p) const = 0;
-        virtual TReturn visit_header(ast::header const& h) const = 0;
+        virtual TReturn visit_paragraph(ast::paragraph const& p) = 0;
+        virtual TReturn visit_header(ast::header const& h) = 0;
     };
 
     // https://www.boost.org/doc/libs/develop/libs/spirit/doc/x3/html/spirit_x3/tutorials/rexpr.html
     template <typename TVisitor>
-    bool parse_string(std::string::iterator first, std::string::iterator last, std::vector<x3::variant<ast::paragraph, ast::header>>& md, markdown_visitor<TVisitor>* visitor = nullptr)
+    bool parse_string(std::string::iterator first, std::string::iterator last, markdown_visitor<TVisitor>* visitor = nullptr)
     {
+        std::vector<x3::variant<ast::paragraph, ast::header>> md;
         bool r = x3::phrase_parse(first, last, parser::markdown, blank, md);
 
         if(visitor)
