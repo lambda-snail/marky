@@ -9,6 +9,7 @@ italics_stream  : ITALICS_ENVELOPE BLANK* w_stream ITALICS_ENVELOPE BLANK*;
 bold_stream     : BOLD_ENVELOPE BLANK* w_stream BOLD_ENVELOPE BLANK*;
 
 w_stream        : (italics_stream | bold_stream | WORD BLANK*)+ | WORD;
+
 header          : HEADER_START+ BLANK* raw_stream;
 
 
@@ -16,8 +17,8 @@ header          : HEADER_START+ BLANK* raw_stream;
 fragment ALNUM          : ~[_*#\n\r\f\t ] ; // 'alnum' here means any char not white space or reserved by markdown
 HEADER_START            : '#' ;
 
-BLANK                   : ' ' | '\t' ;
-LBREAK                  : '\n' | '\r\f' ;
+BLANK                   : (' ' | '\t') -> skip ;
+LBREAK                  : ('\n' | '\r\f') -> skip ;
 WHITESPACE              : LBREAK | BLANK ;
 
 WORD                    : (ALNUM)+ ;
