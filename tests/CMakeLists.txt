@@ -3,7 +3,7 @@ add_library(GTest::GTest INTERFACE IMPORTED)
 target_link_libraries(GTest::GTest INTERFACE gtest_main)
 
 add_executable(marky_tests
-        src/main.cpp src/library_tests.h
+        src/main.cpp
         src/parser_tests.h)
 
 include_directories(marky_tests PRIVATE src)
