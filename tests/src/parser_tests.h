@@ -53,7 +53,7 @@ TEST_F(GrammarTests, Paragraphs_ShouldParseParagraphs)
     class TestListener : public marky::MarkdownBaseListener {
         public:
         int num = 0;
-        void enterBlock(marky::MarkdownParser::BlockContext* ctx) override
+        void enterParagraph(marky::MarkdownParser::ParagraphContext *) override
         {
             ++num;
         }
@@ -97,6 +97,30 @@ TEST_F(GrammarTests, Headers_ShouldCountLevelsCorrectly)
     runWithListener(header_three_level, &listener);
 
     EXPECT_EQ(3, listener.levels);
+}
+
+TEST_F(GrammarTests, General_ShouldParseMixedHeadersAndParagraphs)
+{
+    class TestListener : public marky::MarkdownBaseListener {
+    public:
+        int headers = 0;
+        void enterHeader(marky::MarkdownParser::HeaderContext* ctx) override
+        {
+            ++headers;
+        }
+
+        int num = 0;
+
+        void enterParagraph(marky::MarkdownParser::ParagraphContext *) override
+        {
+            ++num;
+        }
+    } listener;
+
+    runWithListener(two_headers_two_paragraphs, &listener);
+
+    EXPECT_EQ(2, listener.num);
+    EXPECT_EQ(2, listener.headers);
 }
 
 //

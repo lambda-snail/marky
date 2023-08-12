@@ -19,7 +19,7 @@ public:
 
   enum {
     RuleMarkdown = 0, RuleBlock = 1, RuleRaw_stream = 2, RuleItalics_stream = 3, 
-    RuleBold_stream = 4, RuleW_stream = 5, RuleHeader = 6
+    RuleBold_stream = 4, RuleW_stream = 5, RuleHeader = 6, RuleParagraph = 7
   };
 
   explicit MarkdownParser(antlr4::TokenStream *input);
@@ -45,7 +45,8 @@ public:
   class Italics_streamContext;
   class Bold_streamContext;
   class W_streamContext;
-  class HeaderContext; 
+  class HeaderContext;
+  class ParagraphContext; 
 
   class  MarkdownContext : public antlr4::ParserRuleContext {
   public:
@@ -69,7 +70,7 @@ public:
   public:
     BlockContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    W_streamContext *w_stream();
+    ParagraphContext *paragraph();
     HeaderContext *header();
     antlr4::tree::TerminalNode *EOF();
     std::vector<antlr4::tree::TerminalNode *> EOL();
@@ -180,6 +181,21 @@ public:
   };
 
   HeaderContext* header();
+
+  class  ParagraphContext : public antlr4::ParserRuleContext {
+  public:
+    ParagraphContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    W_streamContext *w_stream();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  ParagraphContext* paragraph();
 
 
   // By default the static state used to implement the parser is lazily initialized during the first

@@ -45,6 +45,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual std::any visitParagraph(MarkdownParser::ParagraphContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
 
 };
 

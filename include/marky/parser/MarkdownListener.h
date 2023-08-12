@@ -37,6 +37,9 @@ public:
   virtual void enterHeader(MarkdownParser::HeaderContext *ctx) = 0;
   virtual void exitHeader(MarkdownParser::HeaderContext *ctx) = 0;
 
+  virtual void enterParagraph(MarkdownParser::ParagraphContext *ctx) = 0;
+  virtual void exitParagraph(MarkdownParser::ParagraphContext *ctx) = 0;
+
 
 };
 

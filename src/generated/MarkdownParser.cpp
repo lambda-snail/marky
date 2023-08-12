@@ -55,7 +55,7 @@ void markdownParserInitialize() {
   auto staticData = std::make_unique<MarkdownParserStaticData>(
     std::vector<std::string>{
       "markdown", "block", "raw_stream", "italics_stream", "bold_stream", 
-      "w_stream", "header"
+      "w_stream", "header", "paragraph"
     },
     std::vector<std::string>{
       "", "'#'", "", "", "", "", "'*'", "'_'"
@@ -66,40 +66,41 @@ void markdownParserInitialize() {
     }
   );
   static const int32_t serializedATNSegment[] = {
-  	4,1,7,109,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,1,0,
-  	5,0,16,8,0,10,0,12,0,19,9,0,1,0,5,0,22,8,0,10,0,12,0,25,9,0,1,1,1,1,3,
-  	1,29,8,1,1,1,4,1,32,8,1,11,1,12,1,33,1,1,3,1,37,8,1,1,2,1,2,5,2,41,8,
-  	2,10,2,12,2,44,9,2,4,2,46,8,2,11,2,12,2,47,1,3,1,3,5,3,52,8,3,10,3,12,
-  	3,55,9,3,1,3,1,3,1,3,5,3,60,8,3,10,3,12,3,63,9,3,1,4,1,4,5,4,67,8,4,10,
-  	4,12,4,70,9,4,1,4,1,4,1,4,5,4,75,8,4,10,4,12,4,78,9,4,1,5,1,5,1,5,1,5,
-  	5,5,84,8,5,10,5,12,5,87,9,5,4,5,89,8,5,11,5,12,5,90,1,5,3,5,94,8,5,1,
-  	6,4,6,97,8,6,11,6,12,6,98,1,6,5,6,102,8,6,10,6,12,6,105,9,6,1,6,1,6,1,
-  	6,0,0,7,0,2,4,6,8,10,12,0,0,119,0,17,1,0,0,0,2,28,1,0,0,0,4,45,1,0,0,
-  	0,6,49,1,0,0,0,8,64,1,0,0,0,10,93,1,0,0,0,12,96,1,0,0,0,14,16,5,3,0,0,
-  	15,14,1,0,0,0,16,19,1,0,0,0,17,15,1,0,0,0,17,18,1,0,0,0,18,23,1,0,0,0,
-  	19,17,1,0,0,0,20,22,3,2,1,0,21,20,1,0,0,0,22,25,1,0,0,0,23,21,1,0,0,0,
-  	23,24,1,0,0,0,24,1,1,0,0,0,25,23,1,0,0,0,26,29,3,10,5,0,27,29,3,12,6,
-  	0,28,26,1,0,0,0,28,27,1,0,0,0,29,36,1,0,0,0,30,32,5,3,0,0,31,30,1,0,0,
-  	0,32,33,1,0,0,0,33,31,1,0,0,0,33,34,1,0,0,0,34,37,1,0,0,0,35,37,5,0,0,
-  	1,36,31,1,0,0,0,36,35,1,0,0,0,37,3,1,0,0,0,38,42,5,5,0,0,39,41,5,2,0,
-  	0,40,39,1,0,0,0,41,44,1,0,0,0,42,40,1,0,0,0,42,43,1,0,0,0,43,46,1,0,0,
-  	0,44,42,1,0,0,0,45,38,1,0,0,0,46,47,1,0,0,0,47,45,1,0,0,0,47,48,1,0,0,
-  	0,48,5,1,0,0,0,49,53,5,7,0,0,50,52,5,2,0,0,51,50,1,0,0,0,52,55,1,0,0,
-  	0,53,51,1,0,0,0,53,54,1,0,0,0,54,56,1,0,0,0,55,53,1,0,0,0,56,57,3,10,
-  	5,0,57,61,5,7,0,0,58,60,5,2,0,0,59,58,1,0,0,0,60,63,1,0,0,0,61,59,1,0,
-  	0,0,61,62,1,0,0,0,62,7,1,0,0,0,63,61,1,0,0,0,64,68,5,6,0,0,65,67,5,2,
-  	0,0,66,65,1,0,0,0,67,70,1,0,0,0,68,66,1,0,0,0,68,69,1,0,0,0,69,71,1,0,
-  	0,0,70,68,1,0,0,0,71,72,3,10,5,0,72,76,5,6,0,0,73,75,5,2,0,0,74,73,1,
-  	0,0,0,75,78,1,0,0,0,76,74,1,0,0,0,76,77,1,0,0,0,77,9,1,0,0,0,78,76,1,
-  	0,0,0,79,89,3,6,3,0,80,89,3,8,4,0,81,85,5,5,0,0,82,84,5,2,0,0,83,82,1,
-  	0,0,0,84,87,1,0,0,0,85,83,1,0,0,0,85,86,1,0,0,0,86,89,1,0,0,0,87,85,1,
-  	0,0,0,88,79,1,0,0,0,88,80,1,0,0,0,88,81,1,0,0,0,89,90,1,0,0,0,90,88,1,
-  	0,0,0,90,91,1,0,0,0,91,94,1,0,0,0,92,94,5,5,0,0,93,88,1,0,0,0,93,92,1,
-  	0,0,0,94,11,1,0,0,0,95,97,5,1,0,0,96,95,1,0,0,0,97,98,1,0,0,0,98,96,1,
-  	0,0,0,98,99,1,0,0,0,99,103,1,0,0,0,100,102,5,2,0,0,101,100,1,0,0,0,102,
-  	105,1,0,0,0,103,101,1,0,0,0,103,104,1,0,0,0,104,106,1,0,0,0,105,103,1,
-  	0,0,0,106,107,3,4,2,0,107,13,1,0,0,0,17,17,23,28,33,36,42,47,53,61,68,
-  	76,85,88,90,93,98,103
+  	4,1,7,113,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
+  	7,7,1,0,5,0,18,8,0,10,0,12,0,21,9,0,1,0,5,0,24,8,0,10,0,12,0,27,9,0,1,
+  	1,1,1,3,1,31,8,1,1,1,4,1,34,8,1,11,1,12,1,35,1,1,3,1,39,8,1,1,2,1,2,5,
+  	2,43,8,2,10,2,12,2,46,9,2,4,2,48,8,2,11,2,12,2,49,1,3,1,3,5,3,54,8,3,
+  	10,3,12,3,57,9,3,1,3,1,3,1,3,5,3,62,8,3,10,3,12,3,65,9,3,1,4,1,4,5,4,
+  	69,8,4,10,4,12,4,72,9,4,1,4,1,4,1,4,5,4,77,8,4,10,4,12,4,80,9,4,1,5,1,
+  	5,1,5,1,5,5,5,86,8,5,10,5,12,5,89,9,5,4,5,91,8,5,11,5,12,5,92,1,5,3,5,
+  	96,8,5,1,6,4,6,99,8,6,11,6,12,6,100,1,6,5,6,104,8,6,10,6,12,6,107,9,6,
+  	1,6,1,6,1,7,1,7,1,7,0,0,8,0,2,4,6,8,10,12,14,0,0,122,0,19,1,0,0,0,2,30,
+  	1,0,0,0,4,47,1,0,0,0,6,51,1,0,0,0,8,66,1,0,0,0,10,95,1,0,0,0,12,98,1,
+  	0,0,0,14,110,1,0,0,0,16,18,5,3,0,0,17,16,1,0,0,0,18,21,1,0,0,0,19,17,
+  	1,0,0,0,19,20,1,0,0,0,20,25,1,0,0,0,21,19,1,0,0,0,22,24,3,2,1,0,23,22,
+  	1,0,0,0,24,27,1,0,0,0,25,23,1,0,0,0,25,26,1,0,0,0,26,1,1,0,0,0,27,25,
+  	1,0,0,0,28,31,3,14,7,0,29,31,3,12,6,0,30,28,1,0,0,0,30,29,1,0,0,0,31,
+  	38,1,0,0,0,32,34,5,3,0,0,33,32,1,0,0,0,34,35,1,0,0,0,35,33,1,0,0,0,35,
+  	36,1,0,0,0,36,39,1,0,0,0,37,39,5,0,0,1,38,33,1,0,0,0,38,37,1,0,0,0,39,
+  	3,1,0,0,0,40,44,5,5,0,0,41,43,5,2,0,0,42,41,1,0,0,0,43,46,1,0,0,0,44,
+  	42,1,0,0,0,44,45,1,0,0,0,45,48,1,0,0,0,46,44,1,0,0,0,47,40,1,0,0,0,48,
+  	49,1,0,0,0,49,47,1,0,0,0,49,50,1,0,0,0,50,5,1,0,0,0,51,55,5,7,0,0,52,
+  	54,5,2,0,0,53,52,1,0,0,0,54,57,1,0,0,0,55,53,1,0,0,0,55,56,1,0,0,0,56,
+  	58,1,0,0,0,57,55,1,0,0,0,58,59,3,10,5,0,59,63,5,7,0,0,60,62,5,2,0,0,61,
+  	60,1,0,0,0,62,65,1,0,0,0,63,61,1,0,0,0,63,64,1,0,0,0,64,7,1,0,0,0,65,
+  	63,1,0,0,0,66,70,5,6,0,0,67,69,5,2,0,0,68,67,1,0,0,0,69,72,1,0,0,0,70,
+  	68,1,0,0,0,70,71,1,0,0,0,71,73,1,0,0,0,72,70,1,0,0,0,73,74,3,10,5,0,74,
+  	78,5,6,0,0,75,77,5,2,0,0,76,75,1,0,0,0,77,80,1,0,0,0,78,76,1,0,0,0,78,
+  	79,1,0,0,0,79,9,1,0,0,0,80,78,1,0,0,0,81,91,3,6,3,0,82,91,3,8,4,0,83,
+  	87,5,5,0,0,84,86,5,2,0,0,85,84,1,0,0,0,86,89,1,0,0,0,87,85,1,0,0,0,87,
+  	88,1,0,0,0,88,91,1,0,0,0,89,87,1,0,0,0,90,81,1,0,0,0,90,82,1,0,0,0,90,
+  	83,1,0,0,0,91,92,1,0,0,0,92,90,1,0,0,0,92,93,1,0,0,0,93,96,1,0,0,0,94,
+  	96,5,5,0,0,95,90,1,0,0,0,95,94,1,0,0,0,96,11,1,0,0,0,97,99,5,1,0,0,98,
+  	97,1,0,0,0,99,100,1,0,0,0,100,98,1,0,0,0,100,101,1,0,0,0,101,105,1,0,
+  	0,0,102,104,5,2,0,0,103,102,1,0,0,0,104,107,1,0,0,0,105,103,1,0,0,0,105,
+  	106,1,0,0,0,106,108,1,0,0,0,107,105,1,0,0,0,108,109,3,4,2,0,109,13,1,
+  	0,0,0,110,111,3,10,5,0,111,15,1,0,0,0,17,19,25,30,35,38,44,49,55,63,70,
+  	78,87,90,92,95,100,105
   };
   staticData->serializedATN = antlr4::atn::SerializedATNView(serializedATNSegment, sizeof(serializedATNSegment) / sizeof(serializedATNSegment[0]));
 
@@ -209,24 +210,24 @@ MarkdownParser::MarkdownContext* MarkdownParser::markdown() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(17);
+    setState(19);
     _errHandler->sync(this);
     _la = _input->LA(1);
     while (_la == MarkdownParser::EOL) {
-      setState(14);
+      setState(16);
       match(MarkdownParser::EOL);
-      setState(19);
+      setState(21);
       _errHandler->sync(this);
       _la = _input->LA(1);
     }
-    setState(23);
+    setState(25);
     _errHandler->sync(this);
     _la = _input->LA(1);
     while ((((_la & ~ 0x3fULL) == 0) &&
       ((1ULL << _la) & 226) != 0)) {
-      setState(20);
+      setState(22);
       block();
-      setState(25);
+      setState(27);
       _errHandler->sync(this);
       _la = _input->LA(1);
     }
@@ -247,8 +248,8 @@ MarkdownParser::BlockContext::BlockContext(ParserRuleContext *parent, size_t inv
   : ParserRuleContext(parent, invokingState) {
 }
 
-MarkdownParser::W_streamContext* MarkdownParser::BlockContext::w_stream() {
-  return getRuleContext<MarkdownParser::W_streamContext>(0);
+MarkdownParser::ParagraphContext* MarkdownParser::BlockContext::paragraph() {
+  return getRuleContext<MarkdownParser::ParagraphContext>(0);
 }
 
 MarkdownParser::HeaderContext* MarkdownParser::BlockContext::header() {
@@ -306,19 +307,19 @@ MarkdownParser::BlockContext* MarkdownParser::block() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(28);
+    setState(30);
     _errHandler->sync(this);
     switch (_input->LA(1)) {
       case MarkdownParser::WORD:
       case MarkdownParser::BOLD_ENVELOPE:
       case MarkdownParser::ITALICS_ENVELOPE: {
-        setState(26);
-        w_stream();
+        setState(28);
+        paragraph();
         break;
       }
 
       case MarkdownParser::HEADER_START: {
-        setState(27);
+        setState(29);
         header();
         break;
       }
@@ -326,17 +327,17 @@ MarkdownParser::BlockContext* MarkdownParser::block() {
     default:
       throw NoViableAltException(this);
     }
-    setState(36);
+    setState(38);
     _errHandler->sync(this);
     switch (_input->LA(1)) {
       case MarkdownParser::EOL: {
-        setState(31); 
+        setState(33); 
         _errHandler->sync(this);
         _la = _input->LA(1);
         do {
-          setState(30);
+          setState(32);
           match(MarkdownParser::EOL);
-          setState(33); 
+          setState(35); 
           _errHandler->sync(this);
           _la = _input->LA(1);
         } while (_la == MarkdownParser::EOL);
@@ -344,7 +345,7 @@ MarkdownParser::BlockContext* MarkdownParser::block() {
       }
 
       case MarkdownParser::EOF: {
-        setState(35);
+        setState(37);
         match(MarkdownParser::EOF);
         break;
       }
@@ -424,23 +425,23 @@ MarkdownParser::Raw_streamContext* MarkdownParser::raw_stream() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(45); 
+    setState(47); 
     _errHandler->sync(this);
     _la = _input->LA(1);
     do {
-      setState(38);
+      setState(40);
       match(MarkdownParser::WORD);
-      setState(42);
+      setState(44);
       _errHandler->sync(this);
       _la = _input->LA(1);
       while (_la == MarkdownParser::BLANK) {
-        setState(39);
+        setState(41);
         match(MarkdownParser::BLANK);
-        setState(44);
+        setState(46);
         _errHandler->sync(this);
         _la = _input->LA(1);
       }
-      setState(47); 
+      setState(49); 
       _errHandler->sync(this);
       _la = _input->LA(1);
     } while (_la == MarkdownParser::WORD);
@@ -520,29 +521,29 @@ MarkdownParser::Italics_streamContext* MarkdownParser::italics_stream() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(49);
+    setState(51);
     match(MarkdownParser::ITALICS_ENVELOPE);
-    setState(53);
+    setState(55);
     _errHandler->sync(this);
     _la = _input->LA(1);
     while (_la == MarkdownParser::BLANK) {
-      setState(50);
+      setState(52);
       match(MarkdownParser::BLANK);
-      setState(55);
+      setState(57);
       _errHandler->sync(this);
       _la = _input->LA(1);
     }
-    setState(56);
+    setState(58);
     w_stream();
-    setState(57);
+    setState(59);
     match(MarkdownParser::ITALICS_ENVELOPE);
-    setState(61);
+    setState(63);
     _errHandler->sync(this);
     _la = _input->LA(1);
     while (_la == MarkdownParser::BLANK) {
-      setState(58);
+      setState(60);
       match(MarkdownParser::BLANK);
-      setState(63);
+      setState(65);
       _errHandler->sync(this);
       _la = _input->LA(1);
     }
@@ -622,29 +623,29 @@ MarkdownParser::Bold_streamContext* MarkdownParser::bold_stream() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(64);
+    setState(66);
     match(MarkdownParser::BOLD_ENVELOPE);
-    setState(68);
+    setState(70);
     _errHandler->sync(this);
     _la = _input->LA(1);
     while (_la == MarkdownParser::BLANK) {
-      setState(65);
+      setState(67);
       match(MarkdownParser::BLANK);
-      setState(70);
+      setState(72);
       _errHandler->sync(this);
       _la = _input->LA(1);
     }
-    setState(71);
+    setState(73);
     w_stream();
-    setState(72);
+    setState(74);
     match(MarkdownParser::BOLD_ENVELOPE);
-    setState(76);
+    setState(78);
     _errHandler->sync(this);
     _la = _input->LA(1);
     while (_la == MarkdownParser::BLANK) {
-      setState(73);
+      setState(75);
       match(MarkdownParser::BLANK);
-      setState(78);
+      setState(80);
       _errHandler->sync(this);
       _la = _input->LA(1);
     }
@@ -736,42 +737,42 @@ MarkdownParser::W_streamContext* MarkdownParser::w_stream() {
   });
   try {
     size_t alt;
-    setState(93);
+    setState(95);
     _errHandler->sync(this);
     switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 14, _ctx)) {
     case 1: {
       enterOuterAlt(_localctx, 1);
-      setState(88); 
+      setState(90); 
       _errHandler->sync(this);
       alt = 1;
       do {
         switch (alt) {
           case 1: {
-                setState(88);
+                setState(90);
                 _errHandler->sync(this);
                 switch (_input->LA(1)) {
                   case MarkdownParser::ITALICS_ENVELOPE: {
-                    setState(79);
+                    setState(81);
                     italics_stream();
                     break;
                   }
 
                   case MarkdownParser::BOLD_ENVELOPE: {
-                    setState(80);
+                    setState(82);
                     bold_stream();
                     break;
                   }
 
                   case MarkdownParser::WORD: {
-                    setState(81);
+                    setState(83);
                     match(MarkdownParser::WORD);
-                    setState(85);
+                    setState(87);
                     _errHandler->sync(this);
                     _la = _input->LA(1);
                     while (_la == MarkdownParser::BLANK) {
-                      setState(82);
+                      setState(84);
                       match(MarkdownParser::BLANK);
-                      setState(87);
+                      setState(89);
                       _errHandler->sync(this);
                       _la = _input->LA(1);
                     }
@@ -787,7 +788,7 @@ MarkdownParser::W_streamContext* MarkdownParser::w_stream() {
         default:
           throw NoViableAltException(this);
         }
-        setState(90); 
+        setState(92); 
         _errHandler->sync(this);
         alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 13, _ctx);
       } while (alt != 2 && alt != atn::ATN::INVALID_ALT_NUMBER);
@@ -796,7 +797,7 @@ MarkdownParser::W_streamContext* MarkdownParser::w_stream() {
 
     case 2: {
       enterOuterAlt(_localctx, 2);
-      setState(92);
+      setState(94);
       match(MarkdownParser::WORD);
       break;
     }
@@ -880,28 +881,89 @@ MarkdownParser::HeaderContext* MarkdownParser::header() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(96); 
+    setState(98); 
     _errHandler->sync(this);
     _la = _input->LA(1);
     do {
-      setState(95);
+      setState(97);
       match(MarkdownParser::HEADER_START);
-      setState(98); 
+      setState(100); 
       _errHandler->sync(this);
       _la = _input->LA(1);
     } while (_la == MarkdownParser::HEADER_START);
-    setState(103);
+    setState(105);
     _errHandler->sync(this);
     _la = _input->LA(1);
     while (_la == MarkdownParser::BLANK) {
-      setState(100);
+      setState(102);
       match(MarkdownParser::BLANK);
-      setState(105);
+      setState(107);
       _errHandler->sync(this);
       _la = _input->LA(1);
     }
-    setState(106);
+    setState(108);
     raw_stream();
+   
+  }
+  catch (RecognitionException &e) {
+    _errHandler->reportError(this, e);
+    _localctx->exception = std::current_exception();
+    _errHandler->recover(this, _localctx->exception);
+  }
+
+  return _localctx;
+}
+
+//----------------- ParagraphContext ------------------------------------------------------------------
+
+MarkdownParser::ParagraphContext::ParagraphContext(ParserRuleContext *parent, size_t invokingState)
+  : ParserRuleContext(parent, invokingState) {
+}
+
+MarkdownParser::W_streamContext* MarkdownParser::ParagraphContext::w_stream() {
+  return getRuleContext<MarkdownParser::W_streamContext>(0);
+}
+
+
+size_t MarkdownParser::ParagraphContext::getRuleIndex() const {
+  return MarkdownParser::RuleParagraph;
+}
+
+void MarkdownParser::ParagraphContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<MarkdownListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterParagraph(this);
+}
+
+void MarkdownParser::ParagraphContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<MarkdownListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitParagraph(this);
+}
+
+
+std::any MarkdownParser::ParagraphContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<MarkdownVisitor*>(visitor))
+    return parserVisitor->visitParagraph(this);
+  else
+    return visitor->visitChildren(this);
+}
+
+MarkdownParser::ParagraphContext* MarkdownParser::paragraph() {
+  ParagraphContext *_localctx = _tracker.createInstance<ParagraphContext>(_ctx, getState());
+  enterRule(_localctx, 14, MarkdownParser::RuleParagraph);
+
+#if __cplusplus > 201703L
+  auto onExit = finally([=, this] {
+#else
+  auto onExit = finally([=] {
+#endif
+    exitRule();
+  });
+  try {
+    enterOuterAlt(_localctx, 1);
+    setState(110);
+    w_stream();
    
   }
   catch (RecognitionException &e) {

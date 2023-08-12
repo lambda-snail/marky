@@ -39,6 +39,9 @@ public:
   virtual void enterHeader(MarkdownParser::HeaderContext * /*ctx*/) override { }
   virtual void exitHeader(MarkdownParser::HeaderContext * /*ctx*/) override { }
 
+  virtual void enterParagraph(MarkdownParser::ParagraphContext * /*ctx*/) override { }
+  virtual void exitParagraph(MarkdownParser::ParagraphContext * /*ctx*/) override { }
+
 
   virtual void enterEveryRule(antlr4::ParserRuleContext * /*ctx*/) override { }
   virtual void exitEveryRule(antlr4::ParserRuleContext * /*ctx*/) override { }

@@ -34,6 +34,8 @@ public:
 
     virtual std::any visitHeader(MarkdownParser::HeaderContext *context) = 0;
 
+    virtual std::any visitParagraph(MarkdownParser::ParagraphContext *context) = 0;
+
 
 };
 
