@@ -13,7 +13,7 @@ namespace marky {
 class  MarkdownLexer : public antlr4::Lexer {
 public:
   enum {
-    HEADER_START = 1, BLANK = 2, LBREAK = 3, WHITESPACE = 4, WORD = 5, BOLD_ENVELOPE = 6, 
+    HEADER_START = 1, BLANK = 2, EOL = 3, WHITESPACE = 4, WORD = 5, BOLD_ENVELOPE = 6, 
     ITALICS_ENVELOPE = 7
   };
 

@@ -13,7 +13,7 @@ namespace marky {
 class  MarkdownParser : public antlr4::Parser {
 public:
   enum {
-    HEADER_START = 1, BLANK = 2, LBREAK = 3, WHITESPACE = 4, WORD = 5, BOLD_ENVELOPE = 6, 
+    HEADER_START = 1, BLANK = 2, EOL = 3, WHITESPACE = 4, WORD = 5, BOLD_ENVELOPE = 6, 
     ITALICS_ENVELOPE = 7
   };
 
@@ -51,6 +51,8 @@ public:
   public:
     MarkdownContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
+    std::vector<antlr4::tree::TerminalNode *> EOL();
+    antlr4::tree::TerminalNode* EOL(size_t i);
     std::vector<BlockContext *> block();
     BlockContext* block(size_t i);
 
@@ -70,8 +72,8 @@ public:
     W_streamContext *w_stream();
     HeaderContext *header();
     antlr4::tree::TerminalNode *EOF();
-    std::vector<antlr4::tree::TerminalNode *> LBREAK();
-    antlr4::tree::TerminalNode* LBREAK(size_t i);
+    std::vector<antlr4::tree::TerminalNode *> EOL();
+    antlr4::tree::TerminalNode* EOL(size_t i);
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;

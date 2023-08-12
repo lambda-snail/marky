@@ -58,8 +58,8 @@ void markdownlexerLexerInitialize() {
 #endif
   auto staticData = std::make_unique<MarkdownLexerStaticData>(
     std::vector<std::string>{
-      "ALNUM", "HEADER_START", "BLANK", "LBREAK", "WHITESPACE", "WORD", 
-      "BOLD_ENVELOPE", "ITALICS_ENVELOPE"
+      "ALNUM", "HEADER_START", "BLANK", "EOL", "WHITESPACE", "WORD", "BOLD_ENVELOPE", 
+      "ITALICS_ENVELOPE"
     },
     std::vector<std::string>{
       "DEFAULT_TOKEN_CHANNEL", "HIDDEN"
@@ -71,7 +71,7 @@ void markdownlexerLexerInitialize() {
       "", "'#'", "", "", "", "", "'*'", "'_'"
     },
     std::vector<std::string>{
-      "", "HEADER_START", "BLANK", "LBREAK", "WHITESPACE", "WORD", "BOLD_ENVELOPE", 
+      "", "HEADER_START", "BLANK", "EOL", "WHITESPACE", "WORD", "BOLD_ENVELOPE", 
       "ITALICS_ENVELOPE"
     }
   );
