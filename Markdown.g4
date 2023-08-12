@@ -1,8 +1,8 @@
 grammar Markdown;
 
-markdown        : block*;
+markdown        : EOL* block*;
 
-block           : (w_stream | header) (LBREAK+ | EOF);
+block           : (w_stream | header) (EOL+ | EOF);
 
 raw_stream      : (WORD BLANK*)+ ;
 italics_stream  : ITALICS_ENVELOPE BLANK* w_stream ITALICS_ENVELOPE BLANK*;
@@ -18,8 +18,8 @@ fragment ALNUM          : ~[_*#\n\r\f\t ] ; // 'alnum' here means any char not w
 HEADER_START            : '#' ;
 
 BLANK                   : (' ' | '\t') -> skip ;
-LBREAK                  : ('\n' | '\r\f');
-WHITESPACE              : LBREAK | BLANK ;
+EOL                     : ('\n' | '\r\f');
+WHITESPACE              : EOL | BLANK ;
 
 WORD                    : (ALNUM)+ ;
 BOLD_ENVELOPE           : '*' ;
