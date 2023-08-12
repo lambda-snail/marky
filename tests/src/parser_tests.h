@@ -12,6 +12,11 @@ R"(
 # This is a level one header
 )";
 
+std::string header_three_level =
+R"(
+### This is a level one header
+)";
+
 std::string two_paragraphs =
 R"(
 This is a single paragraph. It should not count as 0 or 2 paragraphs.
@@ -43,7 +48,7 @@ protected:
     }
 };
 
-TEST_F(GrammarTests, Paragraphs_ShouldIgnoreBlankLines)
+TEST_F(GrammarTests, Paragraphs_ShouldParseParagraphs)
 {
     class TestListener : public marky::MarkdownBaseListener {
         public:
@@ -52,12 +57,6 @@ TEST_F(GrammarTests, Paragraphs_ShouldIgnoreBlankLines)
         {
             ++num;
         }
-
-        void enterMarkdown(marky::MarkdownParser::MarkdownContext* ctx) override
-        {
-            ++num;
-        }
-
     } listener;
 
     runWithListener(two_paragraphs, &listener);
@@ -65,14 +64,41 @@ TEST_F(GrammarTests, Paragraphs_ShouldIgnoreBlankLines)
     EXPECT_EQ(2, listener.num);
 }
 
-//TEST_F(GrammarTests, Headers_LevelOneShouldParse)
-//{
-//    bool r = marky::parser::parse_string(header_one_level.begin(), header_one_level.end(), &v);
-//
-//    EXPECT_TRUE(r);
-//    EXPECT_EQ(1, v.headers);
-//    EXPECT_EQ(6, v.words);
-//}
+TEST_F(GrammarTests, Headers_LevelOneShouldParse)
+{
+    class TestListener : public marky::MarkdownBaseListener {
+    public:
+        int num = 0;
+        int level = 0;
+        void enterHeader(marky::MarkdownParser::HeaderContext* ctx) override
+        {
+            ++num;
+            level = static_cast<int>(ctx->HEADER_START().size());
+        }
+    } listener;
+
+    runWithListener(header_one_level, &listener);
+
+    EXPECT_EQ(1, listener.num);
+    EXPECT_EQ(1, listener.level);
+}
+
+TEST_F(GrammarTests, Headers_ShouldCountLevelsCorrectly)
+{
+    class TestListener : public marky::MarkdownBaseListener {
+    public:
+        int levels = 0;
+        void enterHeader(marky::MarkdownParser::HeaderContext* ctx) override
+        {
+            levels = static_cast<int>(ctx->HEADER_START().size());
+        }
+    } listener;
+
+    runWithListener(header_three_level, &listener);
+
+    EXPECT_EQ(3, listener.levels);
+}
+
 //
 //TEST_F(GrammarTests, MixedHeadersParagraphs_ShouldParse)
 //{
