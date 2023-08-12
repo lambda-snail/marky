@@ -1,9 +1,9 @@
 #pragma once
 
-#include <marky/parser.h>
+#include <antlr4-runtime.h>
+#include "Markdown"
 
 #include <gtest/gtest.h>
-#include <cmath>
 
 std::string header_one_level =
 R"(
@@ -26,14 +26,12 @@ This is another paragraph!
 )";
 
 
-class ParserTests : public ::testing::Test {
-public:
-
+class GrammarTests : public ::testing::Test {
 protected:
 
 };
 
-TEST_F(ParserTests, Paragraphs_ShouldIgnoreBlankLines)
+TEST_F(GrammarTests, Paragraphs_ShouldIgnoreBlankLines)
 {
 //    bool r = marky::parser::parse_string(two_paragraphs.begin(), two_paragraphs.end(), &v);
 //
@@ -41,7 +39,7 @@ TEST_F(ParserTests, Paragraphs_ShouldIgnoreBlankLines)
 //    EXPECT_EQ(18, v.words);
 }
 
-//TEST_F(ParserTests, Headers_LevelOneShouldParse)
+//TEST_F(GrammarTests, Headers_LevelOneShouldParse)
 //{
 //    bool r = marky::parser::parse_string(header_one_level.begin(), header_one_level.end(), &v);
 //
@@ -50,7 +48,7 @@ TEST_F(ParserTests, Paragraphs_ShouldIgnoreBlankLines)
 //    EXPECT_EQ(6, v.words);
 //}
 //
-//TEST_F(ParserTests, MixedHeadersParagraphs_ShouldParse)
+//TEST_F(GrammarTests, MixedHeadersParagraphs_ShouldParse)
 //{
 //    bool r = marky::parse_string(two_headers_two_paragraphs.begin(),
 //                                 two_headers_two_paragraphs.end(),
@@ -62,7 +60,7 @@ TEST_F(ParserTests, Paragraphs_ShouldIgnoreBlankLines)
 //    EXPECT_EQ(3, v.level);
 //}
 //
-//TEST_F(ParserTests, MixedHeadersParagraphs_WordsShouldNotDisappear)
+//TEST_F(GrammarTests, MixedHeadersParagraphs_WordsShouldNotDisappear)
 //{
 //    bool r = marky::parse_string(two_headers_two_paragraphs.begin(),
 //                                 two_headers_two_paragraphs.end(),
