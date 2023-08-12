@@ -49,15 +49,15 @@ TEST_F(GrammarTests, Paragraphs_ShouldIgnoreBlankLines)
     class TestListener : public marky::MarkdownBaseListener {
         public:
         int num = 0;
-        void enterHeader(marky::MarkdownParser::HeaderContext* ctx) override
+        void enterBlock(marky::MarkdownParser::BlockContext* ctx) override
         {
             ++num;
         }
 
-        void visitTerminal(antlr4::tree::TerminalNode *node) override { };
-        void visitErrorNode(antlr4::tree::ErrorNode *node) override { };
-        void enterEveryRule(antlr4::ParserRuleContext *ctx) override { };
-        void exitEveryRule(antlr4::ParserRuleContext *ctx) override { };
+        virtual void enterMarkdown(marky::MarkdownParser::MarkdownContext* ctx) override
+        {
+            ++num;
+        }
 
     } listener;
 
