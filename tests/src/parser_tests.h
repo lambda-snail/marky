@@ -122,26 +122,3 @@ TEST_F(GrammarTests, General_ShouldParseMixedHeadersAndParagraphs)
     EXPECT_EQ(2, listener.num);
     EXPECT_EQ(2, listener.headers);
 }
-
-//
-//TEST_F(GrammarTests, MixedHeadersParagraphs_ShouldParse)
-//{
-//    bool r = marky::parse_string(two_headers_two_paragraphs.begin(),
-//                                 two_headers_two_paragraphs.end(),
-//                                 &v);
-//
-//    EXPECT_TRUE(r);
-//    EXPECT_EQ(2, v.paragraphs);
-//    EXPECT_EQ(2, v.headers);
-//    EXPECT_EQ(3, v.level);
-//}
-//
-//TEST_F(GrammarTests, MixedHeadersParagraphs_WordsShouldNotDisappear)
-//{
-//    bool r = marky::parse_string(two_headers_two_paragraphs.begin(),
-//                                 two_headers_two_paragraphs.end(),
-//                                 &v);
-//
-//    EXPECT_TRUE(r);
-//    EXPECT_EQ(30, v.words);
-//}
