@@ -1,7 +1,7 @@
 #pragma once
 
 #include <antlr4-runtime.h>
-#include "Markdown"
+#include "marky/parser/"
 
 #include <gtest/gtest.h>
 
