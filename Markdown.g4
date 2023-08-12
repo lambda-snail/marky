@@ -18,7 +18,7 @@ fragment ALNUM          : ~[_*#\n\r\f\t ] ; // 'alnum' here means any char not w
 HEADER_START            : '#' ;
 
 BLANK                   : (' ' | '\t') -> skip ;
-LBREAK                  : ('\n' | '\r\f') -> skip ;
+LBREAK                  : ('\n' | '\r\f');
 WHITESPACE              : LBREAK | BLANK ;
 
 WORD                    : (ALNUM)+ ;

@@ -13,6 +13,8 @@ include_directories(marky
         PUBLIC
         include
         ${antlr_SOURCE_DIR}/runtime/Cpp/runtime/src
+        PRIVATE
+        include/marky/parser
 )
 
 

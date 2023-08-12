@@ -2,10 +2,10 @@
 // Generated from .\Markdown.g4 by ANTLR 4.13.0
 
 
-#include "marky/parser/MarkdownListener.h"
-#include "marky/parser/MarkdownVisitor.h"
+#include "MarkdownListener.h"
+#include "MarkdownVisitor.h"
 
-#include "marky/parser/MarkdownParser.h"
+#include "MarkdownParser.h"
 
 
 using namespace antlrcpp;

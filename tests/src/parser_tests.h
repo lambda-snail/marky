@@ -30,7 +30,7 @@ This is another paragraph!
 
 class GrammarTests : public ::testing::Test {
 protected:
-    void runWithListener(std::string markdown, marky::MarkdownBaseListener const* listener)
+    void runWithListener(std::string const& markdown, marky::MarkdownBaseListener* listener)
     {
         antlr4::ANTLRInputStream input(markdown);
         marky::MarkdownLexer lexer(&input);
@@ -39,7 +39,6 @@ protected:
         marky::MarkdownParser parser(&tokens);
 
         auto* tree = parser.markdown();
-        //antlr4::tree::ParseTreeWalker::DEFAULT.walk(const_cast<antlr4::tree::ParseTreeListener *>(listener), tree);
         antlr4::tree::ParseTreeWalker::DEFAULT.walk((antlr4::tree::ParseTreeListener *)listener, tree);
     }
 };
@@ -54,7 +53,7 @@ TEST_F(GrammarTests, Paragraphs_ShouldIgnoreBlankLines)
             ++num;
         }
 
-        virtual void enterMarkdown(marky::MarkdownParser::MarkdownContext* ctx) override
+        void enterMarkdown(marky::MarkdownParser::MarkdownContext* ctx) override
         {
             ++num;
         }
