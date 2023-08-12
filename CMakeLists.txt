@@ -6,7 +6,6 @@ set(CMAKE_CXX_STANDARD 20)
 
 include(CImportDependencies.txt)
 
-#find_package(Boost 1.82 COMPONENTS spirit fusion REQUIRED)
 
 project(marky)
 
@@ -18,8 +17,19 @@ include_directories(marky
 
 
 add_library(marky
-        include/marky/parser.h
-        src/parser.cpp)
+        include/marky/parser/MarkdownBaseListener.h
+        include/marky/parser/MarkdownBaseVisitor.h
+        include/marky/parser/MarkdownLexer.h
+        include/marky/parser/MarkdownListener.h
+        include/marky/parser/MarkdownParser.h
+        include/marky/parser/MarkdownVisitor.h
+
+        src/generated/MarkdownBaseListener.cpp
+        src/generated/MarkdownBaseVisitor.cpp
+        src/generated/MarkdownLexer.cpp
+        src/generated/MarkdownListener.cpp
+        src/generated/MarkdownParser.cpp
+        src/generated/MarkdownVisitor.cpp)
 
 enable_testing()
 add_subdirectory(tests)

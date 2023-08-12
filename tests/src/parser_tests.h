@@ -1,7 +1,9 @@
 #pragma once
 
 #include <antlr4-runtime.h>
-#include "marky/parser/"
+#include "marky/parser/MarkdownLexer.h"
+#include "marky/parser/MarkdownParser.h"
+#include "marky/parser/MarkdownBaseListener.h"
 
 #include <gtest/gtest.h>
 
@@ -28,15 +30,40 @@ This is another paragraph!
 
 class GrammarTests : public ::testing::Test {
 protected:
+    void runWithListener(std::string markdown, marky::MarkdownBaseListener const* listener)
+    {
+        antlr4::ANTLRInputStream input(markdown);
+        marky::MarkdownLexer lexer(&input);
 
+        antlr4::CommonTokenStream tokens(&lexer);
+        marky::MarkdownParser parser(&tokens);
+
+        auto* tree = parser.markdown();
+        //antlr4::tree::ParseTreeWalker::DEFAULT.walk(const_cast<antlr4::tree::ParseTreeListener *>(listener), tree);
+        antlr4::tree::ParseTreeWalker::DEFAULT.walk((antlr4::tree::ParseTreeListener *)listener, tree);
+    }
 };
 
 TEST_F(GrammarTests, Paragraphs_ShouldIgnoreBlankLines)
 {
-//    bool r = marky::parser::parse_string(two_paragraphs.begin(), two_paragraphs.end(), &v);
-//
-//    EXPECT_TRUE(r);
-//    EXPECT_EQ(18, v.words);
+    class TestListener : public marky::MarkdownBaseListener {
+        public:
+        int num = 0;
+        void enterHeader(marky::MarkdownParser::HeaderContext* ctx) override
+        {
+            ++num;
+        }
+
+        void visitTerminal(antlr4::tree::TerminalNode *node) override { };
+        void visitErrorNode(antlr4::tree::ErrorNode *node) override { };
+        void enterEveryRule(antlr4::ParserRuleContext *ctx) override { };
+        void exitEveryRule(antlr4::ParserRuleContext *ctx) override { };
+
+    } listener;
+
+    runWithListener(two_paragraphs, &listener);
+
+    EXPECT_EQ(2, listener.num);
 }
 
 //TEST_F(GrammarTests, Headers_LevelOneShouldParse)
