@@ -15,7 +15,7 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
 include(CImportDependencies.txt)
 
-project(marky)
+project(marky VERSION 0.3.0)
 
 include_directories(marky
         PUBLIC
