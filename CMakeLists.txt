@@ -2,10 +2,18 @@ cmake_minimum_required(VERSION 3.26)
 
 set(INCLUDE_TESTS 1)
 set(MARKY_PUBLIC_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
 set(CMAKE_CXX_STANDARD 20)
 
-include(CImportDependencies.txt)
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Release)
+endif()
 
+set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wshadow -Wnon-virtual-dtor -pedantic")
+set(CMAKE_CXX_FLAGS_DEBUG "-g")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+
+include(CImportDependencies.txt)
 
 project(marky)
 
