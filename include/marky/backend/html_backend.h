@@ -16,7 +16,6 @@ namespace marky::backend::html
 
         //void enterBlock(MarkdownParser::BlockContext * /*ctx*/) override;
         //void enterRaw_stream(MarkdownParser::Raw_streamContext * /*ctx*/) override;
-        //void enterBold_stream(MarkdownParser::Bold_streamContext * /*ctx*/) override;
         //void enterW_stream(MarkdownParser::W_streamContext * /*ctx*/) override;
 
         void enterHeader(MarkdownParser::HeaderContext* /*ctx*/) override;
@@ -27,6 +26,9 @@ namespace marky::backend::html
 
         void enterItalics_stream(MarkdownParser::Italics_streamContext* /*ctx*/) override;
         void exitItalics_stream(MarkdownParser::Italics_streamContext*  /*ctx*/) override;
+
+        void enterBold_stream(MarkdownParser::Bold_streamContext* /*ctx*/) override;
+        void exitBold_stream(MarkdownParser::Bold_streamContext*  /*ctx*/) override;
 
         void visitTerminal(antlr4::tree::TerminalNode *) override;
 

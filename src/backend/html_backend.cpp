@@ -81,3 +81,11 @@ void marky::backend::html::MarkdownToHtml::enterItalics_stream(marky::MarkdownPa
 void marky::backend::html::MarkdownToHtml::exitItalics_stream(marky::MarkdownParser::Italics_streamContext *) {
     m_elements.emplace_back("</i>");
 }
+
+void marky::backend::html::MarkdownToHtml::enterBold_stream(marky::MarkdownParser::Bold_streamContext *) {
+    m_elements.emplace_back("<b>");
+}
+
+void marky::backend::html::MarkdownToHtml::exitBold_stream(marky::MarkdownParser::Bold_streamContext *) {
+    m_elements.emplace_back("</b>");
+}
