@@ -6,30 +6,37 @@
 #include <regex>
 #include <gtest/gtest.h>
 
-class HtmlGenerationTests : public ::testing::Test
+struct TestParams
+{
+    std::string input;
+    std::string expected_regex;
+};
+
+class HtmlGenerationTests : public ::testing::TestWithParam<TestParams>
 {
 protected:
     marky::backend::html::MarkdownToHtml m_html_backend;
     marky::Marky m_marky;
 };
 
-std::string empty_md = "";
-TEST_F(HtmlGenerationTests, EmptyMarkdown_ProducesEmptyDiv)
+INSTANTIATE_TEST_SUITE_P(HtmlGenerationTests,
+                         HtmlGenerationTests,
+                         testing::Values(
+
+TestParams { "", "<div></div>" },
+TestParams { "This is one paragraph", R"(<div><p>[\s]*This[\s]*is[\s]*one[\s]*paragraph[\s]*</p></div>)" },
+TestParams { "# This is one header", R"(<div><h1>[\s]*This[\s]*is[\s]*one[\s]*header[\s]*</h1></div>)" }
+
+));
+
+TEST_P(HtmlGenerationTests, EmptyMarkdown_ProducesEmptyDiv)
 {
-    m_marky.process_markdown(m_html_backend, empty_md);
-    auto html = m_html_backend.get_html();
-    EXPECT_STREQ("<div></div>", html.c_str());
-}
-
-std::string one_p_md = "This is one paragraph";
-TEST_F(HtmlGenerationTests, OneParagraphMarkdown_ProducesPElement)
-{
-    m_marky.process_markdown(m_html_backend, one_p_md);
+    auto [markdown, html_regex] = GetParam();
+    m_marky.process_markdown(m_html_backend, markdown);
     auto html = m_html_backend.get_html();
 
-    std::regex regex(R"(<div><p>[\s]*This[\s]*is[\s]*one[\s]*paragraph[\s]*</p></div>)",
-                          std::regex_constants::ECMAScript | std::regex_constants::icase);
-
-    //EXPECT_STREQ("<div><p>This is one paragraph</p></div>", html.c_str());
+    std::regex regex(html_regex, std::regex_constants::ECMAScript | std::regex_constants::icase);
     EXPECT_TRUE(std::regex_search(html, regex));
 }
+
+//
