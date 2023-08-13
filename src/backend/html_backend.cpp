@@ -73,3 +73,11 @@ void marky::backend::html::MarkdownToHtml::exitHeader(marky::MarkdownParser::Hea
         m_elements.emplace_back("</p>");
     }
 }
+
+void marky::backend::html::MarkdownToHtml::enterItalics_stream(marky::MarkdownParser::Italics_streamContext *) {
+    m_elements.emplace_back("<i>");
+}
+
+void marky::backend::html::MarkdownToHtml::exitItalics_stream(marky::MarkdownParser::Italics_streamContext *) {
+    m_elements.emplace_back("</i>");
+}

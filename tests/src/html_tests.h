@@ -25,11 +25,13 @@ INSTANTIATE_TEST_SUITE_P(HtmlGenerationTests,
 
 TestParams { "", "<div></div>" },
 TestParams { "This is one paragraph", R"(<div><p>[\s]*This[\s]*is[\s]*one[\s]*paragraph[\s]*</p></div>)" },
+
 TestParams { "# This is one header", R"(<div><h1>[\s]*This[\s]*is[\s]*one[\s]*header[\s]*</h1></div>)" },
 TestParams { "## This is one header", R"(<div><h2>[\s]*This[\s]*is[\s]*one[\s]*header[\s]*</h2></div>)" },
 TestParams { "###### This is one header", R"(<div><h6>[\s]*This[\s]*is[\s]*one[\s]*header[\s]*</h6></div>)" }, // Max header level works
-TestParams { "####### This is one header", R"(<div><p>[\s]*This[\s]*is[\s]*one[\s]*header[\s]*</p></div>)" } // Levels higher than max become paragraphs
+TestParams { "####### This is one header", R"(<div><p>[\s]*This[\s]*is[\s]*one[\s]*header[\s]*</p></div>)" }, // Levels higher than max become paragraphs
 
+TestParams { "This is one _italic_ paragraph", R"(<div><p>[\s]*This[\s]*is[\s]*one[\s]*<i>[\s]*italic[\s]*</i>paragraph[\s]*</p></div>)" }
 ));
 
 TEST_P(HtmlGenerationTests, GeneratedHtml_ShouldMatchExpectedRegex)
