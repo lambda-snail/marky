@@ -27,6 +27,8 @@ namespace marky::backend::html
         void exitParagraph(MarkdownParser::ParagraphContext *  /*ctx*/) override;
 
         void visitTerminal(antlr4::tree::TerminalNode *) override;
+
+        static constexpr int HTML_MaxHeaderLevel { 6 };
     private:
         std::vector<std::string> m_elements;
     };

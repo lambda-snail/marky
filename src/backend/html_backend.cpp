@@ -51,9 +51,25 @@ void marky::backend::html::MarkdownToHtml::exitMarkdown(marky::MarkdownParser::M
 }
 
 void marky::backend::html::MarkdownToHtml::enterHeader(marky::MarkdownParser::HeaderContext* context) {
-    m_elements.emplace_back("<h1>");
+    int lvl = static_cast<int>(context->HEADER_START().size());
+    if(lvl <= HTML_MaxHeaderLevel)
+    {
+        m_elements.emplace_back("<h" + std::to_string(lvl) + ">");
+    }
+    else
+    {
+        m_elements.emplace_back("<p>");
+    }
 }
 
 void marky::backend::html::MarkdownToHtml::exitHeader(marky::MarkdownParser::HeaderContext* context) {
-    m_elements.emplace_back("</h1>");
+    int lvl = static_cast<int>(context->HEADER_START().size());
+    if(lvl <= HTML_MaxHeaderLevel)
+    {
+        m_elements.emplace_back("</h" + std::to_string(lvl) + ">");
+    }
+    else
+    {
+        m_elements.emplace_back("</p>");
+    }
 }
