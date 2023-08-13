@@ -40,3 +40,13 @@ std::string marky::backend::html::MarkdownToHtml::get_html() {
 
     return html;
 }
+
+void marky::backend::html::MarkdownToHtml::visitTerminal(antlr4::tree::TerminalNode* node) {
+    auto token = node->getSymbol();
+    switch(token->getType())
+    {
+        case MarkdownLexer::WORD:
+            m_elements.emplace_back(node->getText());
+            m_elements.emplace_back(" ");
+    };
+}

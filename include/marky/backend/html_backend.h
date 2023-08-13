@@ -23,6 +23,8 @@ namespace marky::backend::html
 
         void enterParagraph(MarkdownParser::ParagraphContext * /*ctx*/) override;
         void exitParagraph(MarkdownParser::ParagraphContext *  /*ctx*/) override;
+
+        void visitTerminal(antlr4::tree::TerminalNode *) override;
     private:
         std::vector<std::string> m_elements;
     };
