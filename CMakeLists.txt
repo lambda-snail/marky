@@ -41,7 +41,10 @@ add_library(marky
         src/generated/MarkdownParser.cpp
         src/generated/MarkdownVisitor.cpp
         include/marky/backend/html_backend.h
-        src/backend/html_backend.cpp)
+        src/backend/html_backend.cpp
+        include/marky/Marky.h
+        src/Marky.cpp
+)
 
 enable_testing()
 add_subdirectory(tests)

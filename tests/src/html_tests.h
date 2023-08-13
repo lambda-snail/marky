@@ -1,18 +1,21 @@
 #pragma once
 
-#include <gtest/gtest.h>
-
+#include "marky/Marky.h"
 #include "marky/backend/html_backend.h"
 
-class HtmlTests : public ::testing::Test
+#include <gtest/gtest.h>
+
+class HtmlGenerationTests : public ::testing::Test
 {
 protected:
-    std::unique_ptr<marky::compiler::html::MarkdownToHtml> mp_html;
-
-    void init(std::string const& markdown)
-    {
-        mp_html = std::make_unique<marky::compiler::html::MarkdownToHtml>(new marky::compiler::html::MarkdownToHtml(markdown));
-    }
-
-    ~HtmlTests() override = default;
+    marky::backend::html::MarkdownToHtml m_html_backend;
+    marky::Marky m_marky;
 };
+
+std::string empty_md = "";
+TEST_F(HtmlGenerationTests, EmptyMarkdown_ProducesEmptyDiv)
+{
+    m_marky.process_markdown(m_html_backend, empty_md);
+    auto html = m_html_backend.get_html();
+    EXPECT_STREQ("<div></div>", html.c_str());
+}

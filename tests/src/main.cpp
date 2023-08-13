@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "parser_tests.h"
+#include "html_tests.h"
 
 int main(int argc, char* argv[])
 {

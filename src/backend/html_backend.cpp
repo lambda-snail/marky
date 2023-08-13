@@ -1,23 +1,42 @@
 #include "marky/backend/html_backend.h"
 
 #include <antlr4-runtime.h>
+#include <numeric>
 
 #include "marky/parser/MarkdownLexer.h"
 #include "marky/parser/MarkdownParser.h"
 #include "marky/parser/MarkdownBaseListener.h"
 
 
+void marky::backend::html::MarkdownToHtml::enterParagraph(marky::MarkdownParser::ParagraphContext* context) {
+    m_elements.emplace_back("<p>");
+}
 
+void marky::backend::html::MarkdownToHtml::exitParagraph(marky::MarkdownParser::ParagraphContext *) {
+    m_elements.emplace_back("</p>");
+}
 
+void marky::backend::html::MarkdownToHtml::enterMarkdown(marky::MarkdownParser::MarkdownContext *) {
+    m_elements.emplace_back("<div>");
+}
 
-marky::compiler::html::MarkdownToHtml::MarkdownToHtml(std::string_view markdown)
-{
-    antlr4::ANTLRInputStream input(markdown);
-    marky::MarkdownLexer lexer(&input);
+void marky::backend::html::MarkdownToHtml::exitMarkdown(marky::MarkdownParser::MarkdownContext *) {
+    m_elements.emplace_back("</div>");
+}
 
-    antlr4::CommonTokenStream tokens(&lexer);
-    marky::MarkdownParser parser(&tokens);
+std::string marky::backend::html::MarkdownToHtml::get_html() {
+    std::string html;
+    const int reserve_length = std::accumulate(
+            m_elements.begin(),
+            m_elements.end(),
+            0,
+            [](int a, std::string const& w) { return a + w.length(); });
+    html.reserve(reserve_length);
 
-    auto* tree = parser.markdown();
-   // antlr4::tree::ParseTreeWalker::DEFAULT.walk((antlr4::tree::ParseTreeListener *)listener, tree);
+    for(auto const& elm : m_elements)
+    {
+        html += elm;
+    }
+
+    return html;
 }
