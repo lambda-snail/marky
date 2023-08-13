@@ -24,7 +24,8 @@ INSTANTIATE_TEST_SUITE_P(HtmlGenerationTests,
                          testing::Values(
 
 TestParams { "", "<div></div>" },
-TestParams { "This is one paragraph", R"(<div><p>[\s]*This[\s]*is[\s]*one[\s]*paragraph[\s]*</p></div>)" },
+TestParams { "This is one paragraph", R"(<div><p>[\s]*This[\s]*is[\s]*one[\s]*paragraph[\s]*</p></div>)" }, // Test single paragraph
+TestParams { "Paragraph 1\nParagraph 2", R"(<div><p>[\s]*Paragraph[\s]*1[\s]*</p><p>[\s]*Paragraph[\s]*2[\s]*</p></div>)" }, // Test multiple paragraphs
 
 TestParams { "# This is one header", R"(<div><h1>[\s]*This[\s]*is[\s]*one[\s]*header[\s]*</h1></div>)" },
 TestParams { "## This is one header", R"(<div><h2>[\s]*This[\s]*is[\s]*one[\s]*header[\s]*</h2></div>)" },
@@ -35,7 +36,7 @@ TestParams { "This is one _italic_ paragraph", R"(<div><p>[\s]*This[\s]*is[\s]*o
 TestParams { "This is one *bold* paragraph", R"(<div><p>[\s]*This[\s]*is[\s]*one[\s]*<b>[\s]*bold[\s]*</b>paragraph[\s]*</p></div>)" }
 ));
 
-TEST_P(HtmlGenerationTests, GeneratedHtml_ShouldMatchExpectedRegex)
+TEST_P(HtmlGenerationTests, GeneratedHtml_ShouldMatchMarkdown)
 {
     auto [markdown, html_regex] = GetParam();
     m_marky.process_markdown(m_html_backend, markdown);
