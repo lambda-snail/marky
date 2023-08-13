@@ -19,7 +19,9 @@ namespace marky::backend::html
         //void enterItalics_stream(MarkdownParser::Italics_streamContext * /*ctx*/) override;
         //void enterBold_stream(MarkdownParser::Bold_streamContext * /*ctx*/) override;
         //void enterW_stream(MarkdownParser::W_streamContext * /*ctx*/) override;
-        //void enterHeader(MarkdownParser::HeaderContext * /*ctx*/) override;
+
+        void enterHeader(MarkdownParser::HeaderContext * /*ctx*/) override;
+        void exitHeader(MarkdownParser::HeaderContext *  /*ctx*/) override;
 
         void enterParagraph(MarkdownParser::ParagraphContext * /*ctx*/) override;
         void exitParagraph(MarkdownParser::ParagraphContext *  /*ctx*/) override;

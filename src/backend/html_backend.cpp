@@ -7,23 +7,6 @@
 #include "marky/parser/MarkdownParser.h"
 #include "marky/parser/MarkdownBaseListener.h"
 
-
-void marky::backend::html::MarkdownToHtml::enterParagraph(marky::MarkdownParser::ParagraphContext* context) {
-    m_elements.emplace_back("<p>");
-}
-
-void marky::backend::html::MarkdownToHtml::exitParagraph(marky::MarkdownParser::ParagraphContext *) {
-    m_elements.emplace_back("</p>");
-}
-
-void marky::backend::html::MarkdownToHtml::enterMarkdown(marky::MarkdownParser::MarkdownContext *) {
-    m_elements.emplace_back("<div>");
-}
-
-void marky::backend::html::MarkdownToHtml::exitMarkdown(marky::MarkdownParser::MarkdownContext *) {
-    m_elements.emplace_back("</div>");
-}
-
 std::string marky::backend::html::MarkdownToHtml::get_html() {
     std::string html;
     const int reserve_length = std::accumulate(
@@ -49,4 +32,28 @@ void marky::backend::html::MarkdownToHtml::visitTerminal(antlr4::tree::TerminalN
             m_elements.emplace_back(node->getText());
             m_elements.emplace_back(" ");
     };
+}
+
+void marky::backend::html::MarkdownToHtml::enterParagraph(marky::MarkdownParser::ParagraphContext* context) {
+    m_elements.emplace_back("<p>");
+}
+
+void marky::backend::html::MarkdownToHtml::exitParagraph(marky::MarkdownParser::ParagraphContext* context) {
+    m_elements.emplace_back("</p>");
+}
+
+void marky::backend::html::MarkdownToHtml::enterMarkdown(marky::MarkdownParser::MarkdownContext* context) {
+    m_elements.emplace_back("<div>");
+}
+
+void marky::backend::html::MarkdownToHtml::exitMarkdown(marky::MarkdownParser::MarkdownContext* context) {
+    m_elements.emplace_back("</div>");
+}
+
+void marky::backend::html::MarkdownToHtml::enterHeader(marky::MarkdownParser::HeaderContext* context) {
+    m_elements.emplace_back("<h1>");
+}
+
+void marky::backend::html::MarkdownToHtml::exitHeader(marky::MarkdownParser::HeaderContext* context) {
+    m_elements.emplace_back("</h1>");
 }
