@@ -1,12 +1,12 @@
 #pragma once
 
-#include "marky/parser/MarkdownListener.h"
-
 #include <string>
 
 namespace marky {
+    class MarkdownListener;
+
     class Marky {
     public:
-        void process_markdown(marky::MarkdownListener &backend, std::string_view markdown) const;
+        void process_markdown(MarkdownListener* backend, std::string_view markdown) const;
     };
 }

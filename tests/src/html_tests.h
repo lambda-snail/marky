@@ -14,8 +14,13 @@ struct TestParams
 
 class HtmlGenerationTests : public ::testing::TestWithParam<TestParams>
 {
+public:
+    HtmlGenerationTests()
+    {
+        m_html_backend = std::make_unique<marky::backend::html::MarkdownToHtml>();
+    }
 protected:
-    marky::backend::html::MarkdownToHtml m_html_backend;
+    std::unique_ptr<marky::backend::html::MarkdownToHtml> m_html_backend;
     marky::Marky m_marky;
 };
 
@@ -39,8 +44,8 @@ TestParams { "This is one *bold* paragraph", R"(<div><p>[\s]*This[\s]*is[\s]*one
 TEST_P(HtmlGenerationTests, GeneratedHtml_ShouldMatchMarkdown)
 {
     auto [markdown, html_regex] = GetParam();
-    m_marky.process_markdown(m_html_backend, markdown);
-    auto html = m_html_backend.get_html();
+    m_marky.process_markdown(m_html_backend.get(), markdown);
+    auto html = m_html_backend->get_html();
 
     std::regex regex(html_regex, std::regex_constants::ECMAScript | std::regex_constants::icase);
     EXPECT_TRUE(std::regex_search(html, regex));
