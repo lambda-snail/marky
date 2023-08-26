@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.26)
 
-set(INCLUDE_TESTS 1)
+if(NOT INCLUDE_TESTS)
+    set(INCLUDE_TESTS "marky building with tests" ON)
+endif()
+
 set(MARKY_PUBLIC_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 set(CMAKE_CXX_STANDARD 20)
@@ -25,8 +28,7 @@ include_directories(marky
         include/marky/parser
 )
 
-
-add_library(marky
+add_library(marky SHARED
         include/marky/parser/MarkdownBaseListener.h
         include/marky/parser/MarkdownBaseVisitor.h
         include/marky/parser/MarkdownLexer.h
@@ -49,6 +51,6 @@ add_library(marky
 enable_testing()
 add_subdirectory(tests)
 
-target_link_libraries(marky PUBLIC antlr4_static)
+target_link_libraries(marky PUBLIC antlr4_shared)
 
 #include_directories(marky PRIVATE ${boost_SOURCE_DIR}/)
