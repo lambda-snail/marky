@@ -51,6 +51,6 @@ add_library(marky SHARED
 enable_testing()
 add_subdirectory(tests)
 
-target_link_libraries(marky PUBLIC antlr4_shared)
+target_link_libraries(marky PRIVATE antlr4_static)
 
 #include_directories(marky PRIVATE ${boost_SOURCE_DIR}/)
