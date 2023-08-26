@@ -15,9 +15,9 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
 include(CImportDependencies.txt)
 
-project(marky VERSION 0.3.3)
+project(marky VERSION 0.3.4)
 
-set(marky_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/include ${antlr_SOURCE_DIR}/runtime/Cpp/runtime/src)
+set(marky_ANTLR_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/include ${antlr_SOURCE_DIR}/runtime/Cpp/runtime/src)
 
 include_directories(marky
         PUBLIC
