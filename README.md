@@ -21,6 +21,37 @@ The grammar handles nested bold and italics, so it is possible to italicize text
 
 # Usage
 
+## CMake
+
+Currently, the easiest way to get started is to use ```FetchContent``` with CMake.
+
+```cmake
+FetchContent_Declare(
+        marky
+        GIT_REPOSITORY "https://github.com/lambda-snail/marky.git"
+        GIT_TAG v0.3.5
+)
+
+FetchContent_MakeAvailable(marky)
+```
+
+Then in the projects CMake you will need to add ```${marky_SOURCE_DIR}/include``` to your ```target_include_directories``` and then add ```marky``` to ```target_link_libraries```.
+
+At the moment, the parser does not try to hide the dependency on Antlr4. You do not have to link against antlr4, but you will need to include the header files. Marky provides a CMake variable to make this process simple.
+
+Thus, you should have something similar to this in your projects CMake file in order to use the parser:
+
+```cmake
+target_include_directories(my_awesome_project
+        ...
+        PRIVATE
+        ${marky_ANTLR_INCLUDE_DIRS}
+        ${marky_SOURCE_DIR}/include
+)
+```
+
+## In Code
+
 Currently, to produce html requires two components: an instance of ```MarkdownToHtml``` and an instance of ```Marky```.
 
 - ```Marky``` is the class that kick-starts the parsing process.
