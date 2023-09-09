@@ -38,7 +38,9 @@ TestParams { "###### This is one header", R"(<div><h6>[\s]*This[\s]*is[\s]*one[\
 TestParams { "####### This is one header", R"(<div><p>[\s]*This[\s]*is[\s]*one[\s]*header[\s]*</p></div>)" }, // Levels higher than max become paragraphs
 
 TestParams { "This is one _italic_ paragraph", R"(<div><p>[\s]*This[\s]*is[\s]*one[\s]*<i>[\s]*italic[\s]*</i>paragraph[\s]*</p></div>)" },
-TestParams { "This is one *bold* paragraph", R"(<div><p>[\s]*This[\s]*is[\s]*one[\s]*<b>[\s]*bold[\s]*</b>paragraph[\s]*</p></div>)" }
+TestParams { "This is one *bold* paragraph", R"(<div><p>[\s]*This[\s]*is[\s]*one[\s]*<b>[\s]*bold[\s]*</b>paragraph[\s]*</p></div>)" },
+TestParams { "`This is one code block`", R"(<div><code>[\s]*This[\s]*is[\s]*one[\s]*code[\s]*block[\s]*</code>[\s]*</div>)" },
+TestParams { "This is one `inline` code block", R"(<div>[\s]*<p>[\s]*This[\s]*is[\s]*one[\s]*<code>[\s]*inline[\s]*</code>[\s]*code[\s]*block[\s]*</p>[\s]*</div>)" }
 ));
 
 TEST_P(HtmlGenerationTests, GeneratedHtml_ShouldMatchMarkdown)
