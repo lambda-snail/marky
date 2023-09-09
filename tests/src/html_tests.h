@@ -50,3 +50,14 @@ TEST_P(HtmlGenerationTests, GeneratedHtml_ShouldMatchMarkdown)
     std::regex regex(html_regex, std::regex_constants::ECMAScript | std::regex_constants::icase);
     EXPECT_TRUE(std::regex_search(html, regex));
 }
+
+TEST_P(HtmlGenerationTests, ParsingOperation_ShouldBeIdempotent)
+{
+    auto [markdown, html_regex] = GetParam();
+    m_marky.process_markdown(m_html_backend.get(), markdown);
+
+    auto html1 = m_html_backend->get_html();
+    auto html2 = m_html_backend->get_html();
+
+    EXPECT_TRUE(std::equal(html1.begin(), html1.end(), html2.begin()));
+}
