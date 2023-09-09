@@ -74,18 +74,34 @@ void marky::backend::html::MarkdownToHtml::exitHeader(marky::MarkdownParser::Hea
     }
 }
 
-void marky::backend::html::MarkdownToHtml::enterItalics_stream(marky::MarkdownParser::Italics_streamContext *) {
+void marky::backend::html::MarkdownToHtml::enterItalics_stream(marky::MarkdownParser::Italics_streamContext* context) {
     m_elements.emplace_back("<i>");
 }
 
-void marky::backend::html::MarkdownToHtml::exitItalics_stream(marky::MarkdownParser::Italics_streamContext *) {
+void marky::backend::html::MarkdownToHtml::exitItalics_stream(marky::MarkdownParser::Italics_streamContext* context) {
     m_elements.emplace_back("</i>");
 }
 
-void marky::backend::html::MarkdownToHtml::enterBold_stream(marky::MarkdownParser::Bold_streamContext *) {
+void marky::backend::html::MarkdownToHtml::enterBold_stream(marky::MarkdownParser::Bold_streamContext* context) {
     m_elements.emplace_back("<b>");
 }
 
-void marky::backend::html::MarkdownToHtml::exitBold_stream(marky::MarkdownParser::Bold_streamContext *) {
+void marky::backend::html::MarkdownToHtml::exitBold_stream(marky::MarkdownParser::Bold_streamContext* context) {
     m_elements.emplace_back("</b>");
+}
+
+void marky::backend::html::MarkdownToHtml::enterCode_stream_inl(MarkdownParser::Code_stream_inlContext* context)  {
+    m_elements.emplace_back("<code>");
+}
+
+void marky::backend::html::MarkdownToHtml::exitCode_stream_inl(MarkdownParser::Code_stream_inlContext* context)  {
+    m_elements.emplace_back("</code>");
+}
+
+void marky::backend::html::MarkdownToHtml::enterCode_stream_blk(MarkdownParser::Code_stream_blkContext* context)  {
+    m_elements.emplace_back("<code>");
+}
+
+void marky::backend::html::MarkdownToHtml::exitCode_stream_blk(MarkdownParser::Code_stream_blkContext* context)  {
+    m_elements.emplace_back("</code>");
 }

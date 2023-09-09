@@ -11,24 +11,26 @@ namespace marky::backend::html
     public:
         std::string get_html();
 
-        void enterMarkdown(MarkdownParser::MarkdownContext* /*ctx*/) override;
-        void exitMarkdown(MarkdownParser::MarkdownContext*  /*ctx*/) override;
+        void enterMarkdown(MarkdownParser::MarkdownContext* context) override;
+        void exitMarkdown(MarkdownParser::MarkdownContext* context) override;
 
-        //void enterBlock(MarkdownParser::BlockContext * /*ctx*/) override;
-        //void enterRaw_stream(MarkdownParser::Raw_streamContext * /*ctx*/) override;
-        //void enterW_stream(MarkdownParser::W_streamContext * /*ctx*/) override;
+        void enterHeader(MarkdownParser::HeaderContext* context) override;
+        void exitHeader(MarkdownParser::HeaderContext* context) override;
 
-        void enterHeader(MarkdownParser::HeaderContext* /*ctx*/) override;
-        void exitHeader(MarkdownParser::HeaderContext*  /*ctx*/) override;
+        void enterParagraph(MarkdownParser::ParagraphContext* context) override;
+        void exitParagraph(MarkdownParser::ParagraphContext* context) override;
 
-        void enterParagraph(MarkdownParser::ParagraphContext* /*ctx*/) override;
-        void exitParagraph(MarkdownParser::ParagraphContext*  /*ctx*/) override;
+        void enterItalics_stream(MarkdownParser::Italics_streamContext* context) override;
+        void exitItalics_stream(MarkdownParser::Italics_streamContext* context) override;
 
-        void enterItalics_stream(MarkdownParser::Italics_streamContext* /*ctx*/) override;
-        void exitItalics_stream(MarkdownParser::Italics_streamContext*  /*ctx*/) override;
+        void enterCode_stream_inl(MarkdownParser::Code_stream_inlContext* context) override;
+        void exitCode_stream_inl(MarkdownParser::Code_stream_inlContext* context) override;
 
-        void enterBold_stream(MarkdownParser::Bold_streamContext* /*ctx*/) override;
-        void exitBold_stream(MarkdownParser::Bold_streamContext*  /*ctx*/) override;
+        void enterCode_stream_blk(MarkdownParser::Code_stream_blkContext* context) override;
+        void exitCode_stream_blk(MarkdownParser::Code_stream_blkContext* context) override;
+
+        void enterBold_stream(MarkdownParser::Bold_streamContext* context) override;
+        void exitBold_stream(MarkdownParser::Bold_streamContext* context) override;
 
         void visitTerminal(antlr4::tree::TerminalNode *) override;
 
