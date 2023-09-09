@@ -11,11 +11,17 @@ The parser can currently produce html for the following markdown elements:
 - Italics
 - Bold text
 
-The grammar handles nested bold and italics, so it is possible to italicize text within a bold block and vice versa. The grammar also accepts italics withing italics, however there are currently no rules for how to translate these to html.  
+The grammar handles nested bold and italics, so it is possible to italicize text within a bold block and vice versa. The grammar also accepts italics withing italics, however there are currently no rules for how to translate these to html.
+
+This guide is used as a reference for markdown syntax and semantics.
+
+https://www.markdownguide.org/basic-syntax
 
 ## Roadmap
 
-- Lists
+- Code and block code
+- Quotes and block quotes
+- Ordered and unordered Lists
 - Links
 - Tables
 
