@@ -2,12 +2,14 @@ grammar Markdown;
 
 markdown        : EOL* block*;
 
-block           : (paragraph | header) (EOL+ | EOF);
+block           : (code_stream_blk | paragraph | header) (EOL+ | EOF); // code_stream before paragraph
 
 raw_stream      : (WORD BLANK*)+ ;
 italics_stream  : ITALICS_ENVELOPE BLANK* w_stream ITALICS_ENVELOPE BLANK*;
 bold_stream     : BOLD_ENVELOPE BLANK* w_stream BOLD_ENVELOPE BLANK*;
 code_stream_inl : CODE_ENVELOPE w_stream CODE_ENVELOPE ;
+
+code_stream_blk : code_stream_inl ; // Re-label
 
 w_stream        : (italics_stream | bold_stream | code_stream_inl | WORD BLANK*)+ | WORD;
 
