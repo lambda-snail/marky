@@ -33,6 +33,12 @@ public:
   virtual void enterBold_stream(MarkdownParser::Bold_streamContext * /*ctx*/) override { }
   virtual void exitBold_stream(MarkdownParser::Bold_streamContext * /*ctx*/) override { }
 
+  virtual void enterCode_stream_inl(MarkdownParser::Code_stream_inlContext * /*ctx*/) override { }
+  virtual void exitCode_stream_inl(MarkdownParser::Code_stream_inlContext * /*ctx*/) override { }
+
+  virtual void enterCode_stream_blk(MarkdownParser::Code_stream_blkContext * /*ctx*/) override { }
+  virtual void exitCode_stream_blk(MarkdownParser::Code_stream_blkContext * /*ctx*/) override { }
+
   virtual void enterW_stream(MarkdownParser::W_streamContext * /*ctx*/) override { }
   virtual void exitW_stream(MarkdownParser::W_streamContext * /*ctx*/) override { }
 

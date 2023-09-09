@@ -31,6 +31,12 @@ public:
   virtual void enterBold_stream(MarkdownParser::Bold_streamContext *ctx) = 0;
   virtual void exitBold_stream(MarkdownParser::Bold_streamContext *ctx) = 0;
 
+  virtual void enterCode_stream_inl(MarkdownParser::Code_stream_inlContext *ctx) = 0;
+  virtual void exitCode_stream_inl(MarkdownParser::Code_stream_inlContext *ctx) = 0;
+
+  virtual void enterCode_stream_blk(MarkdownParser::Code_stream_blkContext *ctx) = 0;
+  virtual void exitCode_stream_blk(MarkdownParser::Code_stream_blkContext *ctx) = 0;
+
   virtual void enterW_stream(MarkdownParser::W_streamContext *ctx) = 0;
   virtual void exitW_stream(MarkdownParser::W_streamContext *ctx) = 0;
 

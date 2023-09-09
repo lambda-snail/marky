@@ -37,6 +37,14 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual std::any visitCode_stream_inl(MarkdownParser::Code_stream_inlContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitCode_stream_blk(MarkdownParser::Code_stream_blkContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual std::any visitW_stream(MarkdownParser::W_streamContext *ctx) override {
     return visitChildren(ctx);
   }

@@ -30,6 +30,10 @@ public:
 
     virtual std::any visitBold_stream(MarkdownParser::Bold_streamContext *context) = 0;
 
+    virtual std::any visitCode_stream_inl(MarkdownParser::Code_stream_inlContext *context) = 0;
+
+    virtual std::any visitCode_stream_blk(MarkdownParser::Code_stream_blkContext *context) = 0;
+
     virtual std::any visitW_stream(MarkdownParser::W_streamContext *context) = 0;
 
     virtual std::any visitHeader(MarkdownParser::HeaderContext *context) = 0;

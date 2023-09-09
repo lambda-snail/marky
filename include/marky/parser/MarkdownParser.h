@@ -13,13 +13,14 @@ namespace marky {
 class  MarkdownParser : public antlr4::Parser {
 public:
   enum {
-    HEADER_START = 1, BLANK = 2, EOL = 3, WHITESPACE = 4, WORD = 5, BOLD_ENVELOPE = 6, 
-    ITALICS_ENVELOPE = 7
+    ESCAPE_CHAR = 1, HEADER_START = 2, BLANK = 3, EOL = 4, WHITESPACE = 5, 
+    WORD = 6, BOLD_ENVELOPE = 7, ITALICS_ENVELOPE = 8, CODE_ENVELOPE = 9
   };
 
   enum {
     RuleMarkdown = 0, RuleBlock = 1, RuleRaw_stream = 2, RuleItalics_stream = 3, 
-    RuleBold_stream = 4, RuleW_stream = 5, RuleHeader = 6, RuleParagraph = 7
+    RuleBold_stream = 4, RuleCode_stream_inl = 5, RuleCode_stream_blk = 6, 
+    RuleW_stream = 7, RuleHeader = 8, RuleParagraph = 9
   };
 
   explicit MarkdownParser(antlr4::TokenStream *input);
@@ -44,6 +45,8 @@ public:
   class Raw_streamContext;
   class Italics_streamContext;
   class Bold_streamContext;
+  class Code_stream_inlContext;
+  class Code_stream_blkContext;
   class W_streamContext;
   class HeaderContext;
   class ParagraphContext; 
@@ -70,6 +73,7 @@ public:
   public:
     BlockContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
+    Code_stream_blkContext *code_stream_blk();
     ParagraphContext *paragraph();
     HeaderContext *header();
     antlr4::tree::TerminalNode *EOF();
@@ -141,6 +145,40 @@ public:
 
   Bold_streamContext* bold_stream();
 
+  class  Code_stream_inlContext : public antlr4::ParserRuleContext {
+  public:
+    Code_stream_inlContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    std::vector<antlr4::tree::TerminalNode *> CODE_ENVELOPE();
+    antlr4::tree::TerminalNode* CODE_ENVELOPE(size_t i);
+    W_streamContext *w_stream();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  Code_stream_inlContext* code_stream_inl();
+
+  class  Code_stream_blkContext : public antlr4::ParserRuleContext {
+  public:
+    Code_stream_blkContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    std::vector<antlr4::tree::TerminalNode *> CODE_ENVELOPE();
+    antlr4::tree::TerminalNode* CODE_ENVELOPE(size_t i);
+    W_streamContext *w_stream();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  Code_stream_blkContext* code_stream_blk();
+
   class  W_streamContext : public antlr4::ParserRuleContext {
   public:
     W_streamContext(antlr4::ParserRuleContext *parent, size_t invokingState);
@@ -149,6 +187,8 @@ public:
     Italics_streamContext* italics_stream(size_t i);
     std::vector<Bold_streamContext *> bold_stream();
     Bold_streamContext* bold_stream(size_t i);
+    std::vector<Code_stream_inlContext *> code_stream_inl();
+    Code_stream_inlContext* code_stream_inl(size_t i);
     std::vector<antlr4::tree::TerminalNode *> WORD();
     antlr4::tree::TerminalNode* WORD(size_t i);
     std::vector<antlr4::tree::TerminalNode *> BLANK();
