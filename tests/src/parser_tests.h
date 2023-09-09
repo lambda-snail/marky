@@ -32,6 +32,13 @@ This is a single paragraph. It should not count as 0 or 2 paragraphs.
 This is another paragraph!
 )";
 
+std::string code_block_string =
+R"(
+# This is a level one header
+This is a single paragraph. It contains `one code segment`
+
+`This is a code block. It should not count as an inline code segment`
+)";
 
 class GrammarTests : public ::testing::Test {
 protected:
@@ -121,4 +128,36 @@ TEST_F(GrammarTests, General_ShouldParseMixedHeadersAndParagraphs)
 
     EXPECT_EQ(2, listener.num);
     EXPECT_EQ(2, listener.headers);
+}
+
+TEST_F(GrammarTests, General_ShouldParseInlineCode)
+{
+    class TestListener : public marky::MarkdownBaseListener {
+    public:
+        int code_segments = 0;
+        void enterCode_stream_inl(marky::MarkdownParser::Code_stream_inlContext* ctx) override
+        {
+            ++code_segments;
+        }
+    } listener;
+
+    runWithListener(code_block_string, &listener);
+
+    EXPECT_EQ(1, listener.code_segments);
+}
+
+TEST_F(GrammarTests, General_ShouldParseCodeBlock)
+{
+    class TestListener : public marky::MarkdownBaseListener {
+    public:
+        int code_blocks = 0;
+        void enterCode_stream_blk(marky::MarkdownParser::Code_stream_blkContext* ctx) override
+        {
+            ++code_blocks;
+        }
+    } listener;
+
+    runWithListener(code_block_string, &listener);
+
+    EXPECT_EQ(1, listener.code_blocks);
 }

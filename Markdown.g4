@@ -9,7 +9,7 @@ italics_stream  : ITALICS_ENVELOPE BLANK* w_stream ITALICS_ENVELOPE BLANK*;
 bold_stream     : BOLD_ENVELOPE BLANK* w_stream BOLD_ENVELOPE BLANK*;
 code_stream_inl : CODE_ENVELOPE w_stream CODE_ENVELOPE ;
 
-code_stream_blk : code_stream_inl ; // Re-label
+code_stream_blk : CODE_ENVELOPE w_stream CODE_ENVELOPE ; // Re-label
 
 w_stream        : (italics_stream | bold_stream | code_stream_inl | WORD BLANK*)+ | WORD;
 
